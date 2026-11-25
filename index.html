@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pasar Kita – Belanja Pasar Antar ke Rumah</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&amp;family=Nunito+Sans:wght@400;600;700&amp;display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#effcf3;--card:#fff;--ink:#0f2a1a;--mute:#4d7058;--line:#c9efd6;--green:#16c55a;--green-d:#0e9f46;--green-ink:#05220f;--lime:#b6f23a;--gold-bg:#fff7d1;--gold:#f0b429;--red:#d6372a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#07140c;--card:#10231a;--ink:#e6fbee;--mute:#8fc2a1;--line:#1d3b2a;--green:#2fe07a;--green-d:#2fe07a;--gold-bg:#3a2f10;--red:#ff7a6b}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#07140c;--card:#10231a;--ink:#e6fbee;--mute:#8fc2a1;--line:#1d3b2a;--green:#2fe07a;--green-d:#2fe07a;--gold-bg:#3a2f10;--red:#ff7a6b}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Nunito Sans",system-ui,sans-serif;padding-bottom:30px}
+body.shop{padding-bottom:88px}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0;line-height:1.15}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.hero{background:linear-gradient(135deg,#16c55a 0%,#7be04a 60%,#b6f23a 100%);color:#052e12;padding:26px 0 30px;border-radius:0 0 28px 28px}
+.hero h1{font-size:32px;font-weight:800}.hero p{margin:6px 0 0;font-weight:600}
+.hero .wa{display:inline-block;margin-top:12px;background:#052e12;color:#d9ffe6;border-radius:99px;padding:6px 14px;font-weight:700;font-size:14px;text-decoration:none}
+h2.t{font-size:22px;margin:20px 0 8px}
+label{display:block;font-weight:700;margin:14px 0 4px}
+select,input,textarea{width:100%;font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:12px;padding:11px 12px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--lime);outline-offset:2px;border-color:var(--green)}
+/* daftar provinsi */
+.pl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.pl button{width:100%;display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;font:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.pl button:hover{border-color:var(--green)}
+.pl .no{flex:none;width:30px;height:30px;border-radius:50%;background:var(--green);color:var(--green-ink);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+.pl .nm{flex:1;font-weight:700}.pl small{color:var(--mute)}.pl .ar{color:var(--green-d);font-size:22px;font-weight:800}
+/* pasar */
+.mk{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin:14px 0}
+.ph{aspect-ratio:16/8;width:100%;display:flex;align-items:center;justify-content:center;font-size:54px;background:linear-gradient(135deg,#bbf7d0,#86efac 55%,#d9f99d)}
+.mk img{display:block;width:100%;aspect-ratio:16/8;object-fit:cover}
+.mk .b{padding:14px}.mk h3{font-size:19px}.mk p{margin:4px 0;color:var(--mute);font-size:14px}
+.btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn{flex:1;min-width:110px;text-align:center;border:0;border-radius:12px;padding:11px;font:700 15px "Bricolage Grotesque",system-ui,sans-serif;cursor:pointer;text-decoration:none;background:var(--green);color:var(--green-ink)}
+.btn.o{background:none;border:2px solid var(--green);color:var(--green-d)}
+.btn.d{background:none;border:2px solid var(--red);color:var(--red)}
+.empty{background:var(--card);border:2px dashed var(--line);border-radius:16px;padding:22px;text-align:center;color:var(--mute);margin:14px 0}
+.back{background:none;border:0;color:var(--green-d);font:700 15px inherit;cursor:pointer;padding:12px 0}
+.adm{background:var(--gold-bg);border:1px solid var(--gold);border-radius:14px;padding:12px;margin:12px 0}
+.adm b{display:block;margin-bottom:8px}
+/* form admin */
+.frm{background:var(--card);border:2px solid var(--green);border-radius:18px;padding:16px;margin:14px 0}
+.fp{display:grid;grid-template-columns:auto 1fr 110px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}
+.fp input[type=checkbox]{width:22px;height:22px;accent-color:var(--green)}
+.fp input[type=number]{padding:7px 8px}
+.fp small{color:var(--mute);display:block}
+.cust{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.prev{margin-top:8px;max-width:100%;border-radius:12px;max-height:180px;object-fit:cover}
+.tr{border:1px solid var(--line);border-radius:12px;padding:10px;margin:8px 0}
+.tr small{color:var(--mute)}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 0}
+.how div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center;font-size:13px;font-weight:700}
+.how b{display:block;font-size:22px;color:var(--green-d)}
+.chip:disabled{opacity:.45;cursor:not-allowed}
+.tl{display:flex;gap:4px;margin:10px 0}.tl i{flex:1;height:6px;border-radius:3px;background:var(--line)}.tl i.on{background:var(--green)}
+.star{background:none;border:0;font-size:28px;line-height:1;cursor:pointer;color:var(--line);padding:2px 4px}.star.on{color:var(--gold)}
+.fav{float:right;background:none;border:0;font-size:24px;cursor:pointer;line-height:1;padding:0 0 0 8px}
+details>summary{cursor:pointer;padding:6px 0}
+/* belanja */
+.shophead{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:4px}
+.shophead .ph{width:64px;aspect-ratio:1;font-size:30px;border-radius:12px;flex:none}
+.shophead img{width:64px;height:64px;border-radius:12px;object-fit:cover}
+.shophead h2{font-size:19px}.shophead small{color:var(--mute)}
+.banner{border-radius:14px;padding:12px 14px;margin:12px 0;font-weight:600;background:var(--gold-bg);border:1px solid var(--gold)}
+.banner.open{background:var(--card);border-color:var(--green)}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.slot{border:2px solid var(--line);background:var(--card);border-radius:16px;padding:12px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.slot[aria-pressed="true"]{border-color:var(--green);box-shadow:0 0 0 4px color-mix(in srgb,var(--green) 25%,transparent)}
+.slot b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:17px;display:block}
+.slot small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:1px 9px;margin-top:6px}
+.tag.on{background:var(--green);color:var(--green-ink)}.tag.off{background:var(--line);color:var(--mute)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}
+.chip{flex:none;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:5px 14px;font:inherit;font-weight:700;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--green);color:var(--green-ink);border-color:var(--green)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column}
+.item .e{font-size:34px;line-height:1}.item h3{font-size:16px;margin-top:6px}
+.item .u{color:var(--mute);font-size:13px}.item .p{font-weight:800;margin:2px 0 8px}
+.add{margin-top:auto;border:0;border-radius:10px;background:var(--green);color:var(--green-ink);font:inherit;font-weight:800;padding:9px;cursor:pointer}
+.step{margin-top:auto;display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:10px}
+.step button{width:42px;height:38px;border:0;background:none;font-size:22px;font-weight:800;color:var(--green-d);cursor:pointer}
+section.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:22px 0}
+section.box h2{font-size:21px;margin-bottom:8px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.row.t{border:0;font-weight:800;font-size:17px}
+.note{color:var(--mute);font-size:14px;margin:8px 0 0}
+.err{color:var(--red);font-weight:700;font-size:14px;margin:8px 0 0}
+.cta{display:block;width:100%;text-align:center;margin-top:16px;padding:14px;border-radius:14px;background:var(--green);color:var(--green-ink);font:800 17px "Bricolage Grotesque",system-ui,sans-serif;text-decoration:none;border:0;cursor:pointer}
+.cta[aria-disabled="true"]{background:var(--line);color:var(--mute);pointer-events:none}
+.bar{display:none;position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);z-index:10}
+body.shop .bar{display:block}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0}
+.bar div{font-weight:800;line-height:1.25}.bar small{display:block;color:var(--mute);font-weight:400}
+.bar button{border:0;border-radius:12px;background:var(--green);color:var(--green-ink);font:800 16px "Bricolage Grotesque",system-ui,sans-serif;padding:12px 20px;cursor:pointer}
+.fp input[type=file],.tr input[type=file]{padding:5px;font-size:12px;margin-top:4px}
+.gpsok{background:var(--card);border:1px solid var(--green);border-radius:12px;padding:8px 10px}
+[hidden]{display:none!important}
+</style>
+<style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style><style>artifact-sync,artifact-local{display:contents}</style></head>
+<body class="">
+<div class="hero"><div class="wrap">
+  <h1>Pasar Kita</h1>
+  <p>Pilih pasar terdekat, kami belanjakan dan antar ke rumah.</p>
+  <a class="wa" href="https://wa.me/6283822027346" target="_blank" rel="noopener">WhatsApp 0838-2202-7346</a>
+  <button class="wa" id="ordbtn" style="border:0;cursor:pointer;margin-left:8px;font-family:inherit">📦 Pesanan Saya</button>
+  <button class="wa" id="modebtn" hidden style="border:0;cursor:pointer;margin-left:8px;font-family:inherit"></button>
+</div></div>
+
+<main class="wrap">
+  <!-- Layar 1: 38 provinsi -->
+  <div id="v1">
+    <div class="how"><div><b>1</b>Pilih pasar</div><div><b>2</b>Pilih barang</div><div><b>3</b>Kirim ke kurir</div></div>
+    <button class="btn" id="nearbtn" style="width:100%;margin:14px 0 0">📍 Cari Pasar Terdekat dari Lokasi Saya</button>
+    <div id="nearlist"></div>
+    <input id="gq" type="search" placeholder="Cari pasar atau produk di semua pasar…" aria-label="Cari lintas pasar" style="margin-top:12px">
+    <div id="gres"></div>
+    <h2 class="t">Pilih provinsi</h2>
+    <ol class="pl" id="plist"></ol>
+    <p class="note" style="text-align:center;margin-top:24px"><a href="#" id="admlink">Masuk admin</a></p>
+  </div>
+
+  <!-- Layar 2: pasar di provinsi -->
+  <div id="v2">
+    <button class="back" id="back1">← Semua provinsi</button>
+    <h2 class="t" id="ptitle">Pasar di Lampung</h2>
+    <div id="admbox" class="adm" hidden>
+      <b>Mode pengelola</b>
+      <div class="btns"><button class="btn" id="addpasar">+ Tambah Pasar</button><button class="btn" id="addtoko">+ Tambah Toko</button><button class="btn" id="addumkm">+ Tambah UMKM</button><button class="btn d" id="clrdemo">Hapus pasar “(contoh)”</button></div>
+      <div class="btns"><button class="btn o" id="expbtn">⬇️ Export / Download HTML terbaru</button><button class="btn o" id="dbpush" hidden>⬆️ Kirim data sekarang ke database</button></div>
+      <div id="expbox" hidden><textarea id="exptxt" rows="4" readonly style="margin-top:8px"></textarea></div>
+      <details><summary><b>💳 Pembayaran (QRIS / Transfer)</b></summary>
+        <label for="pbank">Info rekening transfer</label><textarea id="pbank" rows="2" placeholder="BCA 1234567890 a.n. Nama Usaha"></textarea>
+        <label for="pq">Gambar QRIS</label><input id="pq" type="file" accept="image/*"><img id="pqprev" class="prev" hidden alt="QRIS">
+        <div class="btns"><button class="btn" id="psave">Simpan info pembayaran</button></div></details>
+      <details><summary><b>🔑 Kode status pesanan (kurir/admin)</b></summary>
+        <label for="sid">ID pesanan</label><input id="sid" placeholder="PK-2411-ABCD">
+        <label for="sst">Status</label><select id="sst"></select>
+        <div class="btns"><button class="btn" id="sgen">Buat kode</button></div><div id="sout" class="note"></div></details>
+      <p class="note" id="admmsg"></p>
+    </div>
+    <div id="fwrap"></div>
+    <input id="mq" type="search" placeholder="Cari nama pasar atau produk…" aria-label="Cari pasar" style="margin-top:12px">
+    <div class="chips" id="mchips" role="tablist" aria-label="Kategori tempat"></div>
+    <div class="chips" id="xchips" aria-label="Filter tambahan"></div>
+    <div id="tabaddbar"></div>
+    <div id="mlist"></div>
+  </div>
+
+  <!-- Layar 3: belanja -->
+  <div id="v3" hidden="">
+    <button class="back" id="back2">← Kembali ke daftar pasar</button>
+    <div class="shophead" id="shophead"></div>
+    <div id="banner" class="banner" role="status"></div>
+    <div id="slots"></div>
+    <input id="q" type="search" placeholder="Cari bayam, ayam, telur…" aria-label="Cari produk" style="margin-top:12px">
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="grid"></div>
+    <section class="box" id="checkout">
+      <h2>Pesanan &amp; data pembeli</h2>
+      <div id="cart"></div>
+      <label for="nama">Nama</label><input id="nama" autocomplete="name">
+      <label for="hp">Nomor WhatsApp</label><input id="hp" type="tel" inputmode="tel" autocomplete="tel" placeholder="08xxxxxxxxxx">
+      <label>Lokasi pengantaran</label>
+      <div class="slots" id="locsel">
+        <button type="button" class="slot" data-l="gps" aria-pressed="true"><b>📌 Sharelock otomatis</b><small>Titik GPS akurat seperti WhatsApp</small></button>
+        <button type="button" class="slot" data-l="alamat" aria-pressed="false"><b>🗺️ Alamat lain</b><small>Tulis alamat / link Google Maps</small></button>
+      </div>
+      <div id="gpsbox"><button type="button" class="btn" id="getloc" style="margin-top:10px;width:100%">📌 Kirim / Perbarui Sharelock Lokasi Saya</button><p class="note" id="gpsmsg">Sharelock otomatis mendeteksi koordinat GPS Anda agar jarak &amp; ongkir langsung terhitung.</p></div>
+      <div id="mapbox" hidden><label for="maplink">Link Google Maps (opsional)</label><input id="maplink" type="url" inputmode="url" placeholder="Tempel link dari Google Maps"><p class="note"><a id="findmap" href="https://www.google.com/maps" target="_blank" rel="noopener">Cari alamat ini di Google Maps</a>, tekan Bagikan, lalu tempel link-nya di sini.</p></div>
+      <label for="alamat" id="allbl">Alamat lengkap</label><textarea id="alamat" rows="3" autocomplete="street-address" placeholder="Jalan, nomor rumah, kelurahan, patokan"></textarea>
+      <label for="oos">Jika barang kosong saat belanja</label><select id="oos"><option>Hubungi saya</option><option>Ganti yang sejenis</option><option>Batalkan item tersebut</option></select>
+      <label for="onote">Catatan pesanan (opsional)</label><textarea id="onote" rows="2" placeholder="Contoh: ayam dipotong 8, pisang setengah matang, patokan rumah pagar hijau"></textarea>
+      <label>Metode pembayaran</label><div class="slots" id="paysel" style="grid-template-columns:1fr 1fr 1fr"></div><div id="paybox" class="note"></div>
+      <div id="err" class="err" role="alert"></div>
+      <a id="send" class="cta" href="#" target="_blank" rel="noopener" aria-disabled="true">Kirim pesanan ke kurir lewat WhatsApp</a>
+      <div id="sent" class="banner open" hidden=""></div>
+      <p class="note" id="ongkirnote"></p>
+    </section>
+  </div>
+  <!-- Layar 4: pesanan saya -->
+  <div id="v4" hidden>
+    <button class="back" id="back4">← Kembali</button>
+    <h2 class="t">📦 Pesanan Saya</h2>
+    <div class="adm"><label for="kode" style="margin-top:0">Punya kode status dari kurir?</label>
+      <div class="btns"><input id="kode" placeholder="PK-2411-ABCD.2.k3f9" style="flex:2;min-width:150px"><button class="btn" id="kapply">Terapkan</button></div>
+      <p class="note" id="kmsg"></p></div>
+    <div id="olist"></div>
+  </div>
+  <!-- Layar 5: login admin (terpisah dari tampilan pembeli) -->
+  <div id="v5" hidden>
+    <button class="back" id="back5">← Kembali</button>
+    <h2 class="t">🔐 Masuk Admin</h2>
+    <div class="frm">
+      <label for="lemail">Email</label><input id="lemail" type="email" autocomplete="username" inputmode="email">
+      <label for="lpass">Password</label><input id="lpass" type="password" autocomplete="current-password">
+      <button type="button" class="cta" id="lgo">Masuk</button>
+      <div id="lmsg" class="err" role="alert"></div>
+      <p class="note">Hanya admin yang terdaftar yang dapat mengubah data pasar, harga, dan kurir. Pembeli tidak memerlukan login.</p>
+    </div>
+    <details id="dbsetup" class="adm" style="margin-top:14px"><summary><b>⚙️ Pengaturan database (sekali saja)</b></summary>
+      <p class="note">1) Buat proyek gratis di supabase.com. 2) Settings → API: salin <b>Project URL</b> dan <b>anon public key</b> (bukan service_role). 3) Tempel di bawah lalu tekan Simpan &amp; uji. 4) Tekan Salin SQL, tempel di SQL Editor Supabase, lalu Run. 5) Authentication → Users → Add user dengan email admin, kemudian masuk di atas.</p>
+      <label for="dbu">Project URL</label><input id="dbu" type="url" inputmode="url" placeholder="https://xxxx.supabase.co" autocomplete="off">
+      <label for="dbk">Anon public key</label><textarea id="dbk" rows="3" placeholder="eyJ… atau sb_publishable_…" autocomplete="off"></textarea>
+      <div class="btns"><button type="button" class="btn" id="dbsave">Simpan &amp; uji koneksi</button><button type="button" class="btn o" id="dbsql">Salin SQL siap pakai</button></div>
+      <div class="btns"><button type="button" class="btn d" id="dbclr">Hapus pengaturan</button></div>
+      <p class="note" id="dbmsg" role="status"></p>
+    </details>
+  </div>
+</main>
+
+<div class="bar"><div class="wrap">
+  <div><span id="bt">Keranjang kosong</span><small id="bs">Pilih barang dulu</small></div>
+  <button id="go">Lihat pesanan</button>
+</div></div>
+
+<script type="application/json" id="seed">{"pasar":{"DKI Jakarta":[{"nama":"Pasar Minggu (Jakarta Selatan).","lokasi":"https://maps.app.goo.gl/BfSfgtLD4Kjt1Mcp7","foto":"/_blob/315d33f4ee87e050125c682d3e75eaca","items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]},{"nama":"Pasar Tanah Abang (Jakarta Pusat)","lokasi":"https://maps.app.goo.gl/vArMFEgm5ZmdJoTX9","foto":"/_blob/04173ca325fbbea7c57b1adc4d9d982a","toko":[],"luas":"","ruang":["Blok a\nBlok b\nEks Pasar Tanah Abang Bukit:"],"jadwal":{"bh":"","bj":"","th":"","tj":""},"items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]},{"nama":"Pasar Senen (Jakarta Pusat)","lokasi":"https://maps.app.goo.gl/ryNvfjr3igvRdpE27","foto":"/_blob/0cb2561b72097407a04b210471765d18","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Baru (Jakarta Pusat).","lokasi":"https://maps.app.goo.gl/2J1V45x6b3QiNZUr9","foto":"/_blob/3e7da9233f46f4a896a9c24ebfe09188","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Glodok & Petak Sembilan (Jakarta Barat)","lokasi":"https://maps.app.goo.gl/eKikAESfNMr9UJUE7","foto":"/_blob/096058d96eabfc8a4acd02bea1596fa4","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Jatinegara (Jakarta Timur).","lokasi":"https://maps.app.goo.gl/NeD5ygriwVBTMSxu6","foto":"/_blob/6af4c8eb8b7fb99a2e11562a29b40957","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Mayestik (Jakarta Selatan).","lokasi":"https://maps.app.goo.gl/ViqmoXUKHNiUzcKZ9","foto":"/_blob/6e8bb8310cf58aa8dd9a6f3841261ceb","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Santa (Jakarta Selatan)","lokasi":"https://maps.app.goo.gl/XJJxWbWwXaZcWn3F6","foto":"/_blob/a2ff4372ce4f76d0c716db043979f254","items":[{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"}]},{"nama":"Fresh Market Pantai Indah Kapuk / PIK (Jakarta Utara)","lokasi":"https://maps.app.goo.gl/aZ63u9Aqmwj2d7aH7","foto":"/_blob/2d0660f32b72c7fbcb1e4cc871d69058","items":[{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"}]},{"nama":"Pasar Modern Bintaro & BSD","lokasi":"https://maps.app.goo.gl/zVC3LCfesPsFY6w69","foto":"/_blob/34060a4b2ffbfad050c540880852951a","items":[{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"}]},{"nama":"ITC Mangga Dua (Jakarta Utara)","lokasi":"https://maps.app.goo.gl/3gfSCbc44A52Xzq38","foto":"/_blob/e6eaf422cc934fdbb56ef688ecfc6fb9","items":[{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"}]}],"Jawa Barat":[{"nama":"Pasar Baru Bandung (contoh)","lokasi":"Jl. Otto Iskandardinata, Kota Bandung","foto":"","items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"}]}],"Jawa Tengah":[{"nama":"Pasar Johar Semarang (contoh)","lokasi":"Jl. Agus Salim, Kota Semarang","foto":"","items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]}],"Aceh":[{"nama":"Pasar Aceh (Banda Aceh)","lokasi":"https://maps.app.goo.gl/p6epTpezf9W1h9gL7","foto":"/_blob/48b36bcd4ba354973341992380b29cc1","jadwal":{"bh":"","bj":"","th":"","tj":""},"items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]},{"nama":"Pasar Induk Lambaro (Aceh Besar)","lokasi":"https://maps.app.goo.gl/9jQkk6HFDaPzpLqFA","foto":"/_blob/8193dcc9cdcd4e5cef5b5c4b38bb6777","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Peunayong / Pasar Kartini (Banda Aceh)","lokasi":"https://maps.app.goo.gl/kZfZmhsamATEJ28aA","foto":"/_blob/512cbf9036dec45190209bdb9ae8d511","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Kota Lhokseumawe (Lhokseumawe)","lokasi":"https://maps.app.goo.gl/daiNfdVLQs6NvSXA6","foto":"/_blob/96a34cc611d9bab874e66a65f9d0152f","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Tradisional Rukoh (Banda Aceh)","lokasi":"https://maps.app.goo.gl/RehVa7Cv5mgAfNjW9","foto":"/_blob/4661ad54aa1b67876337d77c862c2aa3","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Suzuya Mall Banda Aceh","lokasi":"https://maps.app.goo.gl/7i58gLvvyWV7S3NN7","foto":"/_blob/672b393fcef4c72d072fc83ba56d0188","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Plaza Aceh (Banda Aceh)","lokasi":"https://maps.app.goo.gl/KJRndvB7y4Bre4qi6","foto":"/_blob/20528b38f38e2543bb962ae9650ebea3","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Suzuya Simpang Lima (Banda Aceh)","lokasi":"https://maps.app.goo.gl/EwdeZxMY1uJJH1gG6","foto":"/_blob/2250f89a69261a8da0315ee99401ef90","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Cunda (Lhokseumawe)","lokasi":"https://maps.app.goo.gl/fyyYCGLr7ZydtJvH6","foto":"/_blob/2f21f1c79dde4546d678063b647d34f2","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]}],"Sumatera Utara":[],"DI Yogyakarta":[{"nama":"Pasar Beringharjo","lokasi":"https://maps.app.goo.gl/AZHoAAuXWeHi85MWA","foto":"/_blob/d506963582efeb20e1a61b7b0d850775","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Tradisional Ngasem","lokasi":"https://maps.app.goo.gl/uzy6xC6nqQ5gZkBF8","foto":"/_blob/2a75aa3f8e86e8cafb64a469ed8fdd97","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Kotagede (Pasar Legi)","lokasi":"https://maps.app.goo.gl/tipvyAj6Mv42RZqp9","foto":"/_blob/7fab0492a79e13aaf6bc574d3e8dbe17","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Klithikan Pakuncen","lokasi":"https://maps.app.goo.gl/vh3g33bpF9hKgKQw5","foto":"/_blob/22cd112bddf77a2b078170e9ae2f3d60","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Kranggan","lokasi":"https://maps.app.goo.gl/igKJtUJhrwq21d1HA","foto":"/_blob/dd785a99d16636d521e70556cdd6ce4a","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]},{"nama":"Pasar Induk Buah dan Sayur Giwangan","lokasi":"https://maps.app.goo.gl/xrGgpvxxHYGpyPxaA","foto":"/_blob/361bd1c9f78f3f0dd5f18da1b0f6cbb0","items":[{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":15700,"c":"Sembako"}]}],"Jambi":[],"Lampung":[{"nama":"Pasar Pasir Gintung","lokasi":"https://maps.app.goo.gl/ssase5iTDdcBYdwn7","foto":"/_blob/ab4318df417873e2cb234af488f0663f","items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]},{"nama":"Pasar Tugu","lokasi":"https://maps.app.goo.gl/f4qsNrLXCiYzDLQn7","foto":"/_blob/c9400b895ac96ab4556eda0b4a41e78a","items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]},{"nama":"Pasar Gudang Lelang","lokasi":"https://maps.app.goo.gl/Ff12dhc3WHqPXfwZA","foto":"/_blob/0a96b898030952a7958a32521510ed1f","jadwal":{"bh":"","bj":"","th":"","tj":""},"items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]},{"nama":"Pasar Tamin","lokasi":"https://maps.app.goo.gl/woZtb64z3d2KWaxt6","foto":"/_blob/d9c8cbba0e06dbe22bd4677b930cc4bc","jadwal":{"bh":"","bj":"","th":"","tj":""},"items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]},{"nama":"Pasar Jatiringin, Lengkukai, Kec. Kelumbayan Bar., Kabupaten Tanggamus, Lampung 35379","lokasi":"https://maps.app.goo.gl/3Zx9m4fU2J4DkEQb8","foto":"/_blob/f2b04cf332acbc0b7265284165b59279","toko":[],"kurir":"","luas":"Untuk pemesanan masuknya ke kita baru ke kurir yang kosong","ruang":[],"jadwal":{"bh":"","bj":"06:00","th":"","tj":"10:00"},"items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]},{"nama":"Pasar umbul kluwih","lokasi":"https://maps.app.goo.gl/8cKwGyvM5j41MuZ29","foto":"/_blob/a07982bbf8f003491830d4a0e0d153e6","toko":[],"kurir":"","luas":"","ruang":[],"jadwal":{"bh":"","bj":"","th":"","tj":""},"items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]},{"nama":"Pasar baru way Kandis kota bandar Lampung, Lampung","lokasi":"https://maps.app.goo.gl/uQagpf1kwXmTZRv26","foto":"/_blob/31d2f33989a4521144a3fd2be42017be","toko":[],"kurir":"","luas":"","ruang":[],"jadwal":{"bh":"","bj":"05:00","th":"","tj":"23:00"},"items":[{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":35000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":27000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":26000,"c":"Lauk"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":16000,"c":"Sembako"}]}],"Riau":[{"nama":"Pasar Bawah Riau","lokasi":"https://maps.app.goo.gl/xH7HcmXprqohJpA46","foto":"/_blob/46021ac316a16028fc68448844e48774","toko":[],"kurirs":[],"koor":null,"jenis":"pasar","h24":true,"wa":"","luas":"","ruang":[],"jadwal":{"bh":"","bj":"","th":"","tj":""},"items":[{"n":"Bayam","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Kangkung","e":"🥬","u":"1 ikat","p":3000,"c":"Sayur"},{"n":"Tomat","e":"🍅","u":"1 kg","p":18000,"c":"Sayur"},{"n":"Wortel","e":"🥕","u":"1 kg","p":16000,"c":"Sayur"},{"n":"Kentang","e":"🥔","u":"1 kg","p":20000,"c":"Sayur"},{"n":"Bawang Merah","e":"🧅","u":"¼ kg","p":14000,"c":"Bumbu"},{"n":"Bawang Putih","e":"🧄","u":"¼ kg","p":12000,"c":"Bumbu"},{"n":"Cabai Merah","e":"🌶️","u":"¼ kg","p":18000,"c":"Bumbu"},{"n":"Ayam Potong","e":"🍗","u":"1 kg","p":38000,"c":"Lauk"},{"n":"Telur Ayam","e":"🥚","u":"1 kg","p":28000,"c":"Lauk"},{"n":"Tempe","e":"🟫","u":"1 papan","p":6000,"c":"Lauk"},{"n":"Tahu Putih","e":"⬜","u":"10 pcs","p":8000,"c":"Lauk"},{"n":"Ikan Lele","e":"🐟","u":"1 kg","p":30000,"c":"Lauk"},{"n":"Pisang","e":"🍌","u":"1 sisir","p":15000,"c":"Buah"},{"n":"Jeruk","e":"🍊","u":"1 kg","p":25000,"c":"Buah"},{"n":"Apel","e":"🍎","u":"1 kg","p":35000,"c":"Buah"},{"n":"Beras","e":"🍚","u":"5 kg","p":70000,"c":"Sembako"},{"n":"Minyak Goreng","e":"🫗","u":"1 liter","p":18000,"c":"Sembako"},{"n":"Gula Pasir","e":"🧂","u":"1 kg","p":17000,"c":"Sembako"}]}]},"t":1795517564506,"pay":{"bank":"","qris":""}}</script>
+<script>
+// ======================= PENGATURAN =======================
+var WA = "6283822027346", TARIF_KM = 3000, ONGKIR_MIN = 5000;
+var RADIUS_KM=15, ROUTE_F=1.3, CUTOFF_MIN=90, MAX_HARI=2; // radius maks, faktor rute, batas pesan sebelum jam antar, H+0..H+2
+var SESI = [
+  {nama:"Sesi Pagi", antar:"06.00–08.00", mulai:[6,0]},
+  {nama:"Sesi Sore", antar:"15.00–17.00", mulai:[15,0]}
+];
+var PILOT=["Lampung"]; // provinsi yang dibuka untuk pembeli; admin tetap melihat semua
+// Pengiriman cepat. Tarif/batas di bawah adalah CONTOH, sesuaikan dengan operasional Anda.
+var EXPRESS=[{mnt:15,maxKm:2,maxItem:5,fee:8000},{mnt:30,maxKm:5,maxItem:10,fee:5000},{mnt:60,maxKm:10,maxItem:20,fee:2000}];
+// ---- Backend mandiri (OPSIONAL). Kosongkan url = aplikasi tetap penuh dengan seed + localStorage + Export HTML.
+// supabase: buat tabel orders (id text primary key, data jsonb). gas: Google Apps Script Web App yang menerima POST JSON {id,data}.
+var BACKEND={type:"",url:"",key:"",table:"orders"}; // type: "supabase" | "gas"
+var KODE_STATUS="pasarkita-ganti-ini"; // rahasia pembuat kode status; GANTI sebelum dipakai
+var STATUS=["Menunggu Konfirmasi","Sedang Dibelanjakan","Sedang Diantar","Selesai"];
+
+// =====================================================================================================
+// [A] KONFIGURASI DATABASE & LOGIN ADMIN  —  WAJIB DIATUR SENDIRI OLEH PEMILIK
+// =====================================================================================================
+// Selama `url` KOSONG, aplikasi memakai mode lama (data bawaan + localStorage + Export HTML) dan
+// TIDAK ADA login email/password. Mode lama TIDAK aman untuk situs publik karena hanya "disembunyikan".
+// Keamanan sungguhan butuh server. Panduan memakai Supabase (gratis untuk skala kecil):
+//
+//  1) Buat proyek di https://supabase.com, lalu isi `url` (Project URL) dan `anonKey` (anon public key) di bawah.
+//     - anon key BOLEH tampil di halaman SELAMA Row Level Security (RLS) menyala (langkah 3).
+//     - JANGAN PERNAH menaruh service_role key / password database di file ini.
+//  2) Authentication → Providers → Email: aktifkan. Authentication → Settings: MATIKAN "Allow new users to sign up"
+//     (agar orang asing tidak bisa mendaftar). Buat akun admin manual lewat Authentication → Users → Add user.
+//  3) SQL Editor → jalankan skrip ini (sekali):
+//
+//     create table app_data (id text primary key, data jsonb not null, updated_at timestamptz default now());
+//     create table admins   (user_id uuid primary key references auth.users(id) on delete cascade);
+//     alter table app_data enable row level security;
+//     alter table admins   enable row level security;
+//     -- BACA: siapa pun (pembeli) boleh membaca data pasar
+//     create policy "baca publik"  on app_data for select to anon, authenticated using (true);
+//     -- TULIS: hanya pengguna yang terdaftar di tabel admins
+//     create policy "admin tambah" on app_data for insert to authenticated
+//       with check (exists (select 1 from admins a where a.user_id = auth.uid()));
+//     create policy "admin ubah"   on app_data for update to authenticated
+//       using      (exists (select 1 from admins a where a.user_id = auth.uid()))
+//       with check (exists (select 1 from admins a where a.user_id = auth.uid()));
+//     -- tabel admins: pengguna hanya bisa melihat barisnya sendiri; TIDAK ada policy insert (isi lewat SQL Editor)
+//     create policy "lihat diri sendiri" on admins for select to authenticated using (user_id = auth.uid());
+//     -- jadikan akun Anda admin (ganti email):
+//     insert into admins (user_id) select id from auth.users where email = 'emailanda@contoh.com';
+//
+//     -- (opsional) pesanan dari BACKEND di atas: pembeli boleh menambah, hanya admin yang boleh membaca/mengubah
+//     create table orders (id text primary key, data jsonb not null, created_at timestamptz default now());
+//     alter table orders enable row level security;
+//     create policy "pembeli buat pesanan" on orders for insert to anon, authenticated with check (true);
+//     create policy "admin baca pesanan"   on orders for select to authenticated using (exists (select 1 from admins a where a.user_id = auth.uid()));
+//     create policy "admin ubah pesanan"   on orders for update to authenticated using (exists (select 1 from admins a where a.user_id = auth.uid()));
+//     -- Catatan: dengan policy ini pembeli tidak bisa membaca status dari server; status tetap lewat kode status.
+//
+//  4) Pasang file ini di hosting Anda sendiri (GitHub Pages/Vercel/Netlify, wajib HTTPS). Di dalam halaman
+//     Claude Artifact, permintaan ke situs lain diblokir sehingga login database tidak bisa dipakai.
+//  5) Ingat: yang menolak/mengizinkan tulis adalah SERVER (RLS). Kode di halaman hanya pengalaman pengguna.
+var DB={
+  url:"",              // contoh: "https://abcdxyz.supabase.co"  (kosong = mode lama tanpa login)
+  anonKey:"",          // anon public key proyek Anda
+  dataTable:"app_data",// tabel data pasar (satu baris JSON)
+  adminsTable:"admins",// tabel daftar admin
+  rowId:"main"         // id baris data
+};
+// Pengaturan dari layar "Pengaturan database" (disimpan di browser ini). Untuk SEMUA pengunjung, tekan Export HTML:
+// file hasil export otomatis memuat URL + anon key di bagian DB ini.
+try{var _c=JSON.parse(localStorage.getItem("pk_dbcfg")||"null");if(_c&&_c.url&&_c.anonKey){DB.url=_c.url;DB.anonKey=_c.anonKey}}catch(e){}
+// Pesanan memakai proyek Supabase yang sama bila BACKEND belum diisi sendiri.
+// Pembeli (anon) hanya INSERT pesanan; upsert/ubah pesanan hanya dengan token admin (sesuai policy orders di atas).
+if(!BACKEND.url&&DB.url){BACKEND.type="supabase";BACKEND.url=DB.url;BACKEND.key=DB.anonKey}
+// Katalog dasar [nama, emoji, satuan, harga, kategori]
+var KATALOG = [
+ ["Bayam","🥬","1 ikat",3000,"Sayur"],["Kangkung","🥬","1 ikat",3000,"Sayur"],["Tomat","🍅","1 kg",18000,"Sayur"],
+ ["Wortel","🥕","1 kg",16000,"Sayur"],["Kentang","🥔","1 kg",20000,"Sayur"],
+ ["Bawang Merah","🧅","¼ kg",14000,"Bumbu"],["Bawang Putih","🧄","¼ kg",12000,"Bumbu"],["Cabai Merah","🌶️","¼ kg",18000,"Bumbu"],
+ ["Ayam Potong","🍗","1 kg",38000,"Lauk"],["Telur Ayam","🥚","1 kg",28000,"Lauk"],["Tempe","🟫","1 papan",6000,"Lauk"],
+ ["Tahu Putih","⬜","10 pcs",8000,"Lauk"],["Ikan Lele","🐟","1 kg",30000,"Lauk"],
+ ["Pisang","🍌","1 sisir",15000,"Buah"],["Jeruk","🍊","1 kg",25000,"Buah"],["Apel","🍎","1 kg",35000,"Buah"],
+ ["Beras","🍚","5 kg",70000,"Sembako"],["Minyak Goreng","🫗","1 liter",18000,"Sembako"],["Gula Pasir","🧂","1 kg",17000,"Sembako"]
+].map(function(k){return {n:k[0],e:k[1],u:k[2],p:k[3],c:k[4]}});
+var PROVINSI = ["Aceh","Sumatera Utara","Sumatera Barat","Riau","Jambi","Sumatera Selatan","Bengkulu","Lampung","Kepulauan Bangka Belitung","Kepulauan Riau","DKI Jakarta","Jawa Barat","Jawa Tengah","DI Yogyakarta","Jawa Timur","Banten","Bali","Nusa Tenggara Barat","Nusa Tenggara Timur","Kalimantan Barat","Kalimantan Tengah","Kalimantan Selatan","Kalimantan Timur","Kalimantan Utara","Sulawesi Utara","Sulawesi Tengah","Sulawesi Selatan","Sulawesi Tenggara","Gorontalo","Sulawesi Barat","Maluku","Maluku Utara","Papua","Papua Barat","Papua Selatan","Papua Tengah","Papua Pegunungan","Papua Barat Daya"];
+// Data contoh, dipakai sampai pengelola menyimpan pasar pertama
+var SAMPLE = {
+ "DKI Jakarta":[{nama:"Pasar Minggu (contoh)",lokasi:"Jl. Raya Pasar Minggu, Jakarta Selatan",foto:"",items:KATALOG}],
+ "Jawa Barat":[{nama:"Pasar Baru Bandung (contoh)",lokasi:"Jl. Otto Iskandardinata, Kota Bandung",foto:"",items:KATALOG.slice(0,14)}],
+ "Jawa Tengah":[{nama:"Pasar Johar Semarang (contoh)",lokasi:"Jl. Agus Salim, Kota Semarang",foto:"",items:KATALOG}]
+};
+
+// ======================= STATE =======================
+var $ = function(i){return document.getElementById(i)};
+var rp = function(n){return "Rp"+(+n||0).toLocaleString("id-ID")};
+var mins = function(t){return t[0]*60+t[1]};
+var pad = function(t){return String(t[0]).padStart(2,"0")+"."+String(t[1]).padStart(2,"0")};
+var esc = function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
+var DATA; try{DATA=JSON.parse($("seed").textContent)}catch(e){DATA={}}
+if(!DATA.pasar)DATA={pasar:SAMPLE};
+var LS_KEY="pk_data_v1";
+function saveLocal(){try{localStorage.setItem(LS_KEY,JSON.stringify(DATA))}catch(e){}}
+// Di luar Claude (GitHub Pages/Vercel/browser biasa): pakai cadangan localStorage bila lebih baru dari data bawaan file
+(function(){if(window.claude)return;try{var sv=JSON.parse(localStorage.getItem(LS_KEY)||"null");if(sv&&sv.pasar&&(sv.t||0)>=(DATA.t||0))DATA=sv}catch(e){}})();
+// Perbaiki harga tidak wajar (mis. 15.7 -> 15700) dan migrasi kurir lama ke daftar kurir
+function fixData(){var n=0;delete DATA.pasar["null"];if(!DATA.pay)DATA.pay={bank:"",qris:""};function fx(it){if(it&&it.p>0&&it.p<1000){it.p=Math.round(it.p*1000);n++}}
+  Object.keys(DATA.pasar).forEach(function(p){DATA.pasar[p].forEach(function(m){(m.items||[]).forEach(fx);(m.toko||[]).forEach(function(t){(t.items||[]).forEach(fx)});if(m.kurir&&!m.kurirs)m.kurirs=[{wa:m.kurir,status:"Aktif"}]})});return n}
+fixData();
+document.addEventListener("error",function(e){var t=e.target;if(t&&t.tagName==="IMG"&&!t.dataset.f){t.dataset.f=1;var d=document.createElement("div");d.className="ph";d.setAttribute("aria-hidden","true");d.textContent="🏪";t.replaceWith(d)}},true);
+var admin=false, prov=null, mk=null, items=[], cart={}, cat="Semua", slot=null, fp=[], editIdx=-1, fotoBaru=null;
+function show(v){["v1","v2","v3","v4","v5"].forEach(function(x){$(x).hidden=x!==v});document.body.classList.toggle("shop",v==="v3");window.scrollTo(0,0)}
+function list(){return DATA.pasar[prov]||(DATA.pasar[prov]=[])}
+function isVid(u){return /^data:video\//i.test(u||"")||/\.(mp4|webm|mov|m4v|ogv)(\?|$)/i.test(u||"")}
+function mediaTag(u,alt,ctl,cls){return isVid(u)?'<video'+(cls?' class="'+cls+'"':'')+' src="'+esc(u)+'" muted playsinline preload="metadata"'+(ctl?' controls':'')+' aria-label="'+esc(alt)+'"></video>':'<img'+(cls?' class="'+cls+'"':'')+' loading="lazy" src="'+esc(u)+'" alt="'+esc(alt)+'">'}
+function foto(m,ctl){return m.foto?mediaTag(m.foto,"Media "+m.nama,ctl):'<div class="ph" aria-hidden="true">🏪</div>'}
+function solo(m){return m.jenis==="umkm"||m.jenis==="toko"}
+var JL={pasar:"Pasar",toko:"Toko",umkm:"UMKM"},OL={pasar:"Pemilik / pengelola pasar",toko:"Pemilik toko",umkm:"Pemilik UMKM"};
+function ownerVal(){var o={nama:$("fon").value.trim(),hp:$("fop").value.trim(),alamat:$("foa").value.trim()};return o.nama||o.hp||o.alamat?o:undefined}
+function jTag(m){return m.jenis==="umkm"?' <span class="tag on">🏠 UMKM</span>':m.jenis==="toko"?' <span class="tag on">🏬 Toko</span>':''}
+function clean(n){return n.replace(" (contoh)","")}
+function mapsLink(m){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(clean(m.nama)+" "+m.lokasi)}
+
+// ======================= LAYAR 1: PROVINSI =======================
+function inPilot(p){return admin||PILOT.indexOf(p)>-1}
+function renderProv(){
+  var ord=PROVINSI.slice().sort(function(a,b){return (PILOT.indexOf(b)>-1)-(PILOT.indexOf(a)>-1)});
+  $("plist").innerHTML=ord.map(function(p,i){var n=(DATA.pasar[p]||[]).length,op=inPilot(p),pl=PILOT.indexOf(p)>-1;
+    return '<li><button data-p="'+esc(p)+'"'+(op?'':' style="opacity:.6"')+'><span class="no">'+(i+1)+'</span><span class="nm">'+esc(p)+'<br><small>'+(pl?'🟢 Uji coba · '+(n?n+" tempat":"belum ada tempat"):(op?'Di luar uji coba (hanya admin) · '+n+' tempat':'Segera hadir'))+'</small></span><span class="ar" aria-hidden="true">›</span></button></li>'}).join("");
+}
+$("plist").onclick=function(e){var b=e.target.closest("[data-p]");if(b)openProv(b.dataset.p)};
+
+// ======================= LAYAR 2: PASAR DI PROVINSI =======================
+function openProv(p){
+  prov=p;$("ptitle").textContent="Pasar, Toko & UMKM di "+p;$("admbox").hidden=!admin;$("fwrap").innerHTML="";
+  if(!inPilot(p)){$("mlist").innerHTML='<div class="empty"><b>'+esc(p)+' belum dibuka.</b><br>Uji coba dimulai dari '+PILOT.map(esc).join(", ")+'. Segera hadir di provinsi lain.</div>';show("v2");return}
+  renderMarkets();show("v2");
+}
+function renderMarkets(){
+  var l=list(),h="";
+  $("mchips").innerHTML=["Semua","Pasar","Toko","UMKM"].map(function(c){return '<button class="chip" role="tab" data-mf="'+c+'" aria-pressed="'+(c===mfilt)+'">'+c+'</button>'}).join("");
+  $("xchips").innerHTML='<button class="chip" data-xf="fast" aria-pressed="'+mfast+'">⚡ Kirim Cepat</button><button class="chip" data-xf="fav" aria-pressed="'+mfav+'">⭐ Favorit</button>';
+  $("tabaddbar").innerHTML=!admin?"":'<div class="btns">'+(mfilt==="Semua"?["pasar","toko","umkm"]:[mfilt.toLowerCase()]).map(function(j){return '<button type="button" class="btn" data-add="'+j+'">+ Tambah '+JL[j]+'</button>'}).join("")+'</div>';
+  l.forEach(function(m,i){if(mOk(prov,m))h+=cardHtml(m,prov,i,false)});
+  $("mlist").innerHTML=h||(l.length?'<div class="empty">Tidak ada yang cocok dengan filter atau pencarian.</div>':'<div class="empty"><b>Belum ada pasar di '+esc(prov)+'.</b><br>'+(admin?'Tekan “Tambah pasar” untuk mulai.':'Pasar di provinsi ini akan segera ditambahkan.')+'</div>');
+}
+$("back1").onclick=function(){renderProv();show("v1")};
+$("mlist").onclick=function(e){
+  var b=e.target.closest("[data-b]"),ed=e.target.closest("[data-e]"),x=e.target.closest("[data-x]");
+  if(b)openShop(list()[+b.dataset.b]);
+  else if(ed)openForm(+ed.dataset.e);
+  else if(x){if(!x.dataset.sure){x.dataset.sure=1;x.textContent="Yakin hapus? Tekan lagi";return}list().splice(+x.dataset.x,1);commit().catch(function(e){$("admmsg").textContent="Gagal menyimpan: "+((e&&e.message)||"coba lagi")})}
+};
+
+// ---- Form tambah/ubah pasar (pengelola) ----
+$("addpasar").onclick=function(){openForm(-1,"pasar")};$("addtoko").onclick=function(){openForm(-1,"toko")};$("addumkm").onclick=function(){openForm(-1,"umkm")};
+$("clrdemo").onclick=function(){if(!this.dataset.sure){this.dataset.sure=1;this.textContent="Yakin? Tekan lagi";return}Object.keys(DATA.pasar).forEach(function(p){DATA.pasar[p]=DATA.pasar[p].filter(function(m){return !isDemo(m)})});commit().catch(function(e){$("admmsg").textContent="Gagal menyimpan: "+((e&&e.message)||"coba lagi")})};
+function openForm(i,jn){
+  editIdx=i;fotoBaru=null;var m=i>=0?list()[i]:null,J=m?(m.jenis||"pasar"):(jn||"pasar");
+  kr=m?(m.kurirs||(m.kurir?[{wa:m.kurir,status:"Aktif"}]:[])).map(function(k){return {wa:k.wa,status:k.status}}):[];
+  fp=KATALOG.map(function(k){var f=m&&m.items.filter(function(x){return x.n===k.n})[0];return {n:k.n,e:k.e,u:k.u,c:k.c,p:f?f.p:k.p,on:!!f,img:f?f.img:undefined}});
+  if(m)m.items.forEach(function(x){if(!KATALOG.some(function(k){return k.n===x.n}))fp.push({n:x.n,e:x.e,u:x.u,c:x.c,p:x.p,on:true,img:x.img})});
+  $("fwrap").innerHTML='<div class="frm" id="frm"><h3>'+(m?"Ubah ":"Tambah ")+JL[J]+'</h3>'+
+  '<label for="fj">Jenis tempat</label><select id="fj"><option value="pasar"'+(J==="pasar"?" selected":"")+'>Pasar</option><option value="toko"'+(J==="toko"?" selected":"")+'>Toko</option><option value="umkm"'+(J==="umkm"?" selected":"")+'>UMKM / jual dari rumah</option></select>'+
+  '<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="fh" style="width:22px;height:22px;accent-color:var(--green)"'+(m&&m.h24?" checked":"")+'> Buka 24 jam (kurir standby)</label>'+
+  '<label for="fw">WhatsApp penjual (wajib untuk Toko &amp; UMKM)</label><input id="fw" type="tel" inputmode="tel" value="'+esc(m&&m.wa||"")+'" placeholder="08xxxxxxxxxx">'+
+  '<label>'+OL[J]+' (opsional, hanya terlihat admin)</label><div class="cust"><input id="fon" placeholder="Nama pemilik" aria-label="Nama pemilik" value="'+esc(m&&m.pemilik?m.pemilik.nama||"":"")+'"><input id="fop" type="tel" inputmode="tel" placeholder="HP / WA pemilik" aria-label="HP pemilik" value="'+esc(m&&m.pemilik?m.pemilik.hp||"":"")+'"></div><input id="foa" style="margin-top:8px" placeholder="Alamat pemilik" aria-label="Alamat pemilik" value="'+esc(m&&m.pemilik?m.pemilik.alamat||"":"")+'">'+
+  '<label for="fn">Nama tempat</label><input id="fn" value="'+esc(m?m.nama:"")+'" placeholder="Contoh: Pasar Tradisional Kota">'+
+  '<label for="fl">Lokasi (alamat lengkap)</label><textarea id="fl" rows="2" placeholder="Jalan, kelurahan, kecamatan, kota">'+esc(m?m.lokasi:"")+'</textarea>'+
+  '<label>Kurir pasar ini (Aktif / Sibuk)</label><div id="kwrap"></div><div class="btns"><button type="button" class="btn o" id="kadd">+ Tambah kurir</button></div>'+
+  '<label for="fc">Koordinat pasar (lintang, bujur) atau link Google Maps panjang</label><input id="fc" value="'+esc(m&&m.koor?m.koor.lat+", "+m.koor.lng:"")+'" placeholder="Contoh: -5.5421, 104.6032"><div class="btns"><button type="button" class="btn o" id="fgps">📍 Pakai lokasi saya sekarang (saya di pasar)</button></div><p class="note">Dipakai untuk menghitung jarak, ongkir, dan radius otomatis. Link pendek (maps.app.goo.gl) tidak bisa dibaca: buka di Google Maps lalu salin koordinat atau link panjangnya.</p>'+
+  '<label>Promo ongkir (opsional)</label><div class="cust"><select id="ptp" aria-label="Jenis promo"><option value="">Tanpa promo</option><option value="gratis"'+(m&&m.promo&&m.promo.tipe==="gratis"?" selected":"")+'>Gratis ongkir</option><option value="potong"'+(m&&m.promo&&m.promo.tipe==="potong"?" selected":"")+'>Potongan ongkir</option></select><input id="pmn" type="number" min="0" inputmode="numeric" placeholder="Min. belanja (Rp)" value="'+esc(m&&m.promo?m.promo.min:"")+'"></div><input id="pnl" type="number" min="0" inputmode="numeric" placeholder="Nilai potongan (Rp) untuk jenis Potongan" value="'+esc(m&&m.promo&&m.promo.tipe==="potong"?m.promo.nilai:"")+'">'+
+  '<label for="fa">Luas pasar</label><input id="fa" value="'+esc(m&&m.luas||"")+'" placeholder="Contoh: 5.000 m²">'+
+  '<label for="fr">Nama tempat / ruangan (pisahkan dengan koma)</label><textarea id="fr" rows="2" placeholder="Contoh: Ruang 1 Lantai 1, Ruang 3 Lantai 2, Blok Sayur">'+esc(m&&m.ruang?m.ruang.join(", "):"")+'</textarea>'+
+  '<label>Jadwal pasar</label><div class="cust"><div><small>Buka hari</small><select id="jbh">'+jOpt(((m&&m.jadwal)||{}).bh)+'</select></div><div><small>Jam buka</small><input id="jbj" type="time" value="'+esc(((m&&m.jadwal)||{}).bj||"")+'"></div><div><small>Tutup hari</small><select id="jth">'+jOpt(((m&&m.jadwal)||{}).th)+'</select></div><div><small>Jam tutup</small><input id="jtj" type="time" value="'+esc(((m&&m.jadwal)||{}).tj||"")+'"></div></div>'+
+  '<label for="ff">Foto / video utama tempat</label><input id="ff" type="file" accept="image/*,video/*">'+
+  '<div id="prevw">'+(m&&m.foto?mediaTag(m.foto,"Media saat ini",1,"prev"):"")+'</div>'+
+  '<label>Produk yang dijual (centang &amp; atur harga)</label><div id="fprod"></div>'+
+  '<div class="cust"><input id="cn" placeholder="Produk baru"><input id="cu" placeholder="Satuan (1 kg)"><input id="cp" type="number" min="0" inputmode="numeric" placeholder="Harga"><input id="cc" placeholder="Kategori (Sayur, Buah…)"></div><label for="cm">Foto / video produk baru (opsional)</label><input id="cm" type="file" accept="image/*,video/*">'+
+  '<div class="btns"><button class="btn o" id="cadd">+ Tambah produk</button></div>'+
+  '<div class="err" id="ferr" role="alert"></div>'+
+  '<div class="btns"><button class="btn" id="fsave">Simpan</button><button class="btn o" id="fcancel">Batal</button></div></div>';
+  renderFp();rKr();$("frm").scrollIntoView({behavior:"smooth"});
+  $("ff").onchange=function(){var f=this.files[0];if(!f)return;fotoBaru=f;var u=URL.createObjectURL(f);$("prevw").innerHTML=/^video\//.test(f.type)?'<video class="prev" src="'+u+'" controls muted playsinline></video>':'<img class="prev" src="'+u+'" alt="Pratinjau">'};
+  $("cadd").onclick=function(){
+    var n=$("cn").value.trim(),pr=+$("cp").value;if(!n||!pr){$("ferr").textContent="Isi nama dan harga produk baru.";return}
+    fp.push({n:n,e:"🛒",u:$("cu").value.trim()||"1 pcs",c:$("cc").value.trim()||"Lainnya",p:pr,on:true,file:$("cm").files[0]||null});
+    ["cn","cu","cp","cc","cm"].forEach(function(k){$(k).value=""});$("ferr").textContent="";renderFp();
+  };
+  $("fcancel").onclick=function(){$("fwrap").innerHTML=""};
+  $("fsave").onclick=saveForm;
+}
+function renderFp(){
+  $("fprod").innerHTML=fp.map(function(f,i){
+    return '<div class="fp"><input type="checkbox" data-k="'+i+'" aria-label="'+esc(f.n)+'"'+(f.on?" checked":"")+'><span>'+esc(f.e)+' '+esc(f.n)+'<small>'+esc(f.u)+' · '+esc(f.c)+(f.img||f.file?' · 🎞️ media ada':'')+'</small><input type="file" accept="image/*,video/*" data-pf="'+i+'" aria-label="Foto/video '+esc(f.n)+'"></span><input type="number" min="0" inputmode="numeric" data-h="'+i+'" value="'+f.p+'" aria-label="Harga '+esc(f.n)+'"></div>'}).join("");
+  $("fprod").onchange=function(e){var k=e.target.dataset;if(k.pf!=null){fp[+k.pf].file=e.target.files[0]||null;return}if(k.k!=null)fp[+k.k].on=e.target.checked;if(k.h!=null)fp[+k.h].p=+e.target.value||0};
+}
+function resize(file){return new Promise(function(ok,no){
+  var im=new Image();im.onload=function(){var s=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement("canvas");
+    c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);c.toBlob(function(b){b?ok(b):no()},"image/jpeg",.78)};
+  im.onerror=no;im.src=URL.createObjectURL(file)})}
+var MAXV=6*1024*1024;
+async function saveMedia(file,old){
+  if(!file)return old||"";
+  var vid=/^video\//.test(file.type),as=window.claude&&await claude.use("assets");
+  if(vid&&!as&&file.size>MAXV)throw new Error("Video terlalu besar (maks. 6 MB). Pendekkan atau kompres video.");
+  var blob=vid?file:await resize(file);
+  return as?(await as.upload(blob)).url:await toData(blob)}
+function toData(b){return new Promise(function(ok){var r=new FileReader();r.onload=function(){ok(r.result)};r.readAsDataURL(b)})}
+async function saveForm(){
+  var nama=$("fn").value.trim(),lok=$("fl").value.trim(),its=fp.filter(function(f){return f.on});
+  if(!nama||!lok){$("ferr").textContent="Isi nama dan lokasi tempat.";return}
+  var kv=$("fc").value.trim(),koor=kv?parseCoords(kv):parseCoords(lok);
+  if(kv&&!koor){$("ferr").textContent="Koordinat tidak terbaca. Isi “lintang, bujur” (contoh -5.5, 104.6) atau tempel link Google Maps panjang.";return}
+  if($("fj").value!=="pasar"&&waNorm($("fw").value).length<10){$("ferr").textContent="Toko & UMKM wajib mengisi nomor WhatsApp penjual.";return}
+  if(!its.length&&!(editIdx>=0&&(list()[editIdx].toko||[]).length)){$("ferr").textContent="Centang minimal satu produk.";return}
+  $("fsave").disabled=true;$("ferr").textContent="Menyimpan…";
+  try{
+    var old=editIdx>=0?list()[editIdx]:null,url=old?old.foto:"";
+    url=await saveMedia(fotoBaru,url);
+    for(var q=0;q<its.length;q++){if(its[q].file)its[q].img=await saveMedia(its[q].file,its[q].img)}
+    var m={nama:nama,lokasi:lok,foto:url||"",toko:old&&old.toko?old.toko:[],kurirs:krClean(),koor:koor,jenis:$("fj").value,pemilik:ownerVal(),h24:$("fh").checked,wa:waNorm($("fw").value),promo:$("ptp").value?{tipe:$("ptp").value,min:+$("pmn").value||0,nilai:+$("pnl").value||0}:null,rt:old&&old.rt?old.rt:undefined,luas:$("fa").value.trim(),ruang:$("fr").value.split(",").map(function(s){return s.trim()}).filter(Boolean),jadwal:{bh:$("jbh").value,bj:$("jbj").value,th:$("jth").value,tj:$("jtj").value},items:its.map(function(f){var x={n:f.n,e:f.e,u:f.u,p:f.p,c:f.c};if(f.img)x.img=f.img;return x})};
+    if(editIdx>=0)list()[editIdx]=m;else list().push(m);
+    await commit();
+  }catch(e){$("fsave").disabled=false;$("ferr").textContent="Gagal menyimpan: "+((e&&e.message)||"coba lagi")}
+}
+// Simpan = terbitkan versi baru halaman dengan data terbaru; halaman lalu dimuat ulang
+function buildHtml(){
+  var c=document.documentElement.cloneNode(true);
+  c.querySelector("#seed").textContent=JSON.stringify(DATA).replace(/</g,"\\u003c");
+  ["plist","mlist","fwrap","shophead","slots","chips","grid","cart","nearlist","sent","banner","olist","gres","mchips","xchips","tabaddbar","paysel","paybox"].forEach(function(i){var n=c.querySelector("#"+i);if(n)n.innerHTML=""});
+  c.querySelector("#v1").hidden=false;c.querySelector("#v2").hidden=true;c.querySelector("#v3").hidden=true;c.querySelector("#v4").hidden=true;c.querySelector("#v5").hidden=true;c.querySelector("#admlink").textContent="Masuk admin";c.querySelector("#lmsg").textContent="";c.querySelector("#dbpush").hidden=true;c.querySelector("#dbmsg").textContent="";c.querySelector("#dbsetup").removeAttribute("open");embedDb(c);["lemail","lpass"].forEach(function(i){c.querySelector("#"+i).removeAttribute("value")});
+  c.querySelector("#admbox").hidden=true;var mb=c.querySelector("#modebtn");mb.hidden=true;mb.textContent="";c.querySelector("#ptitle").textContent="";
+  c.querySelector("#sent").hidden=true;c.querySelector("#expbox").hidden=true;c.querySelector("#exptxt").value="";
+  c.querySelector("body").className="";
+  return "<!DOCTYPE html>\n"+c.outerHTML;
+}
+async function commit(){
+  // GERBANG TULIS: semua perubahan data (pasar, harga, kurir, pembayaran, hapus) wajib lewat sini.
+  if(!canAdmin)throw new Error("Hanya admin yang dapat mengubah data. Masuk sebagai admin dulu.");
+  if(DB.url){ // mode database: tulis hanya bila sesi admin aktif; server (RLS) memverifikasi ulang
+    try{DATA.t=Date.now();await dbSave()}catch(e){await dbLoad();if(/sesi/i.test((e&&e.message)||""))logoutLocal();throw e} // gagal -> batalkan perubahan di memori
+    if(prov)openProv(prov);$("admmsg").textContent="Tersimpan ke database.";return}
+  DATA.t=Date.now();saveLocal();
+  var art=null;try{art=window.claude&&await claude.use("artifact")}catch(e){}
+  if(!art){ // tanpa Claude: data tersimpan di browser ini sebagai cadangan; pakai Export untuk memasang ke hosting
+    if(prov)openProv(prov);$("admmsg").textContent="Tersimpan di browser ini (cadangan). Tekan Export HTML untuk mengunduh file terbaru.";return}
+  try{sessionStorage.setItem("prov",prov)}catch(e){}
+  var r=await art.publish(buildHtml());
+  if(r&&r.conflict)throw new Error("ada perubahan lain, muat ulang halaman");
+}
+function exportHtml(){
+  var h=buildHtml();
+  try{var u=URL.createObjectURL(new Blob([h],{type:"text/html"})),a=document.createElement("a");a.href=u;a.download="pasar-kita.html";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}catch(e){}
+  $("expbox").hidden=false;$("exptxt").value=h;$("admmsg").textContent="Jika file tidak terunduh otomatis, salin teks di kotak ini lalu simpan sebagai pasar-kita.html."}
+
+// ======================= LAYAR 3: BELANJA =======================
+function nowMin(){var h=0,n=0;new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Jakarta",hour:"numeric",minute:"numeric",hourCycle:"h23"}).formatToParts(new Date()).forEach(function(x){if(x.type==="hour")h=+x.value;if(x.type==="minute")n=+x.value});return h*60+n}
+function isDemo(m){return !!m.demo||/\(contoh\)/i.test(m.nama)}
+var HARI=["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu"];
+function jOpt(v){return '<option value="">Pilih hari</option>'+HARI.map(function(h){return '<option'+(h===v?' selected':'')+'>'+h+'</option>'}).join("")}
+function jamF(t){return (t||"").replace(":",".")}
+function jadwalTxt(m){var j=m.jadwal;if(!j||!(j.bh||j.th))return "";return "Buka hari "+(j.bh||"–")+" jam "+(jamF(j.bj)||"–")+", Tutup hari "+(j.th||"–")+" jam "+(jamF(j.tj)||"–")}
+function pasarBuka(m){var j=m.jadwal;if(!j||!j.bh||!j.th||!j.bj||!j.tj)return null;var w=0;new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Jakarta",weekday:"long"}).formatToParts(new Date()).forEach(function(x){if(x.type==="weekday")w=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"].indexOf(x.value)});var hm=function(t){var a=t.split(":");return (+a[0])*60+(+a[1])};var t=w*1440+nowMin(),s=HARI.indexOf(j.bh)*1440+hm(j.bj),e=HARI.indexOf(j.th)*1440+hm(j.tj);return s<=e?(t>=s&&t<=e):(t>=s||t<=e)}
+function jadwalHtml(m){if(!jadwalTxt(m))return "";var j=m.jadwal,b=pasarBuka(m);return '<p>🕒 Buka hari '+esc(j.bh||"–")+' jam '+esc(jamF(j.bj)||"–")+'<br>Tutup hari '+esc(j.th||"–")+' jam '+esc(jamF(j.tj)||"–")+(b===null?'':' <span class="tag '+(b?'on':'off')+'">'+(b?'Buka sekarang':'Tutup sekarang')+'</span>')+'</p>'}
+function total(){var t=0;items.forEach(function(i,k){t+=(cart[k]||0)*i.p});return t}
+function count(){var c=0;for(var k in cart)c+=cart[k];return c}
+function openShop(m){
+  mk=m;items=allItems(m);cart={};cat="Semua";$("q").value="";loadBuyer();$("sent").hidden=true;$("onote").value="";renderPay();
+  $("shophead").innerHTML=foto(m)+'<div><h2>'+esc(m.nama)+(isDemo(m)?' <span class="tag off">DEMO</span>':'')+jTag(m)+(m.h24?' <span class="tag on">24 jam</span>':'')+ratingHtml(prov,m)+'</h2><small>📍 '+esc(m.lokasi)+'</small>'+jadwalHtml(m)+infoHtml(m)+(promoTxt(m)?'<p style="margin:4px 0 0">'+esc(promoTxt(m))+'</p>':'')+'</div>'+favBtn(prov,m);
+  $("ongkirnote").textContent="Ongkir Rp"+TARIF_KM.toLocaleString("id-ID")+" per km (minimal "+rp(ONGKIR_MIN)+"), dihitung otomatis dari jarak ke "+clean(m.nama)+" × "+String(ROUTE_F).replace(".",",")+" (perkiraan rute). Jangkauan maksimal "+RADIUS_KM+" km. Kurir mengonfirmasi lewat WhatsApp. Bayar saat barang tiba.";
+  pickSlot(true);spd=solo(m)?30:"j";show("v3");renderSlots();renderChips();renderGrid();renderCart();
+  setLoc("gps");if(gps)gpsShow();getGps(true);
+}
+var bk=0;$("back2").onclick=function(){var b=this,t="← Kembali ke daftar pasar";if(count()&&!bk){bk=1;b.textContent="Keranjang akan dikosongkan. Tekan lagi untuk keluar";setTimeout(function(){bk=0;b.textContent=t},4000);return}bk=0;b.textContent=t;show("v2")};
+var selD=0,selS=0;
+function sAvail(d,s){return d*1440+SESI[s].mulai[0]*60+SESI[s].mulai[1]-nowMin()>=CUTOFF_MIN}
+function dayOk(d){return SESI.some(function(_,s){return sAvail(d,s)})}
+function pickSlot(force){if(!force&&sAvail(selD,selS))return;for(var d=0;d<=MAX_HARI;d++)for(var s=0;s<SESI.length;s++)if(sAvail(d,s)){selD=d;selS=s;return}}
+function dayLabel(d){var o=wibNow(),t=new Date(Date.UTC(o.year,o.month-1,o.day+d));return ["Hari ini","Besok","Lusa"][d]+" · "+t.toLocaleDateString("id-ID",{timeZone:"UTC",day:"numeric",month:"short"})}
+var spd="j";
+function xInfo(x){var km=jarak();
+  if(!(mk.h24||pasarBuka(mk)!==false))return {ok:false,why:"Tempat ini sedang tutup."};
+  if(km==null)return {ok:false,why:"Ambil lokasi GPS dulu agar jarak terhitung."};
+  if(km>x.maxKm)return {ok:false,why:"Jarak ±"+fk(km)+" km, maks. "+x.maxKm+" km untuk "+x.mnt+" menit."};
+  if(count()>x.maxItem)return {ok:false,why:"Pesanan "+count()+" barang, maks. "+x.maxItem+" untuk "+x.mnt+" menit."};
+  return {ok:true,why:""}}
+function xCur(){return spd==="j"?null:EXPRESS.filter(function(x){return x.mnt===spd})[0]||null}
+function feeX(){var x=xCur();return x?x.fee:0}
+function etaX(x){var o=wibNow(),t=(o.hour*60+o.minute+x.mnt)%1440;return String(Math.floor(t/60)).padStart(2,"0")+"."+String(t%60).padStart(2,"0")}
+function renderSlots(){
+  pickSlot(false);
+  var h='<div class="chips" role="group" aria-label="Jenis pengiriman"><button class="chip" data-x="j" aria-pressed="'+(spd==="j")+'">📅 Terjadwal</button>';
+  EXPRESS.forEach(function(x){h+='<button class="chip" data-x="'+x.mnt+'" aria-pressed="'+(spd===x.mnt)+'">⚡ '+x.mnt+' menit</button>'});
+  h+='</div>';var b=$("banner");b.className="banner open";
+  if(spd==="j"){
+    h+='<div class="chips" role="group" aria-label="Pilih tanggal antar">';
+    for(var d=0;d<=MAX_HARI;d++)h+='<button class="chip" data-d="'+d+'" aria-pressed="'+(d===selD)+'"'+(dayOk(d)?'':' disabled')+'>'+dayLabel(d)+'</button>';
+    h+='</div><div class="slots">';
+    SESI.forEach(function(x,s){var ok=sAvail(selD,s);h+='<button class="slot" data-s="'+s+'" aria-pressed="'+(s===selS)+'"'+(ok?'':' disabled style="opacity:.5"')+'><b>'+x.nama+'</b><small>Antar '+x.antar+' WIB</small><span class="tag '+(ok?'on':'off')+'">'+(ok?'Tersedia':'Lewat batas pesan')+'</span></button>'});
+    h+='</div>';var i=sesiInfo();
+    b.textContent="Pesan kapan saja, 24 jam. Diantar "+i.tgl+", "+i.s.nama.toLowerCase()+" jam "+i.s.antar+" WIB (batas pesan 1,5 jam sebelum jam antar).";
+  }else{
+    var x=xCur(),k=xInfo(x);
+    h+='<div class="slot" style="margin-top:10px;width:100%" aria-live="polite"><b>⚡ Pengiriman cepat '+x.mnt+' menit</b><small>Biaya tambahan '+rp(x.fee)+' · maks. '+x.maxKm+' km · maks. '+x.maxItem+' barang</small><span class="tag '+(k.ok?'on':'off')+'">'+(k.ok?'Tersedia · target tiba ± '+etaX(x)+' WIB':esc(k.why))+'</span></div>';
+    b.textContent=(solo(mk)?"Kurir standby, langsung berangkat setelah pesanan dikonfirmasi. ":"")+"Estimasi sudah termasuk waktu belanja/penyiapan; kurir mengonfirmasi lewat WhatsApp.";
+  }
+  $("slots").innerHTML=h;
+}
+function renderChips(){
+  var cs=["Semua"];items.forEach(function(i){if(cs.indexOf(i.c)<0)cs.push(i.c)});
+  $("chips").innerHTML=cs.map(function(c){return '<button class="chip" data-c="'+esc(c)+'" aria-pressed="'+(c===cat)+'">'+esc(c)+'</button>'}).join("");
+}
+function renderGrid(){
+  $("grid").innerHTML=items.map(function(i,k){if((cat!=="Semua"&&i.c!==cat)||i.n.toLowerCase().indexOf($("q").value.trim().toLowerCase())<0)return "";var n=cart[k]||0;
+    return '<div class="item">'+(i.img?'<div class="media-wrap">'+mediaTag(i.img,i.n,1)+'</div>':'<div class="e" aria-hidden="true">'+esc(i.e)+'</div>')+'<h3>'+esc(i.n)+'</h3><div class="u">'+esc(i.u)+'</div><div class="p">'+rp(i.p)+'</div>'+(i.t?'<div class="u">🏬 '+esc(i.t)+(i.lk?' · '+esc(i.lk):'')+'</div>':'')+(i.s!=null?'<div class="u">'+(i.s>0?'Stok '+i.s:'<b style="color:var(--red)">Habis</b>')+'</div>':'')+
+    (n?'<div class="step"><button data-m="'+k+'" aria-label="Kurangi '+esc(i.n)+'">−</button><b>'+n+'</b><button data-a="'+k+'" aria-label="Tambah '+esc(i.n)+'">+</button></div>':(i.s===0?'<button class="add" disabled style="opacity:.5">Habis</button>':'<button class="add" data-a="'+k+'">Tambah</button>'))+'</div>'}).join("");
+}
+function renderCart(){
+  var rows=items.map(function(i,k){return cart[k]?'<div class="row"><span>'+cart[k]+' × '+esc(i.n)+' <small>('+esc(i.u)+')</small></span><span>'+rp(cart[k]*i.p)+'</span></div>':""}).join("");
+  $("cart").innerHTML=count()?rows+'<div id="tot"></div>':'<p class="note">Keranjang masih kosong. Pilih barang di atas.</p>';
+  $("bt").textContent=count()?count()+" barang · "+rp(total()):"Keranjang kosong";
+  updateSend();
+}
+function updateSend(){renderTotals();renderSlots();sendLite()}
+var sendT=null;function sendSoon(){clearTimeout(sendT);sendT=setTimeout(sendLite,180)}
+function sendLite(){
+  var a=$("send"),msg="",nama=$("nama").value.trim(),hp=$("hp").value.trim(),al=$("alamat").value.trim(),km=jarak();
+  if(isDemo(mk))msg="Ini pasar DEMO dengan harga contoh, pemesanan dinonaktifkan.";
+  else if(!count())msg="Tambahkan minimal satu barang.";
+  else if(locMode==="gps"&&!gps)msg="Sharelock belum aktif. Tekan tombol Sharelock atau pilih Alamat lain.";
+  else if(locMode==="alamat"&&$("maplink").value.trim()&&!okMap($("maplink").value.trim()))msg="Link harus dari Google Maps (maps.app.goo.gl atau google.com/maps).";
+  else if(km!=null&&km>RADIUS_KM)msg="Maaf, lokasi Anda di luar jangkauan pengiriman jarak dekat (maks. "+RADIUS_KM+" km dari pasar).";
+  else if(spd!=="j"&&!xInfo(xCur()).ok)msg="Pengiriman cepat belum tersedia: "+xInfo(xCur()).why;
+  else if(!nama||!hp||!al)msg="Lengkapi nama, nomor WhatsApp, dan alamat.";
+  else if(waNorm(hp).length<10||waNorm(hp).length>15)msg="Nomor WhatsApp belum benar. Contoh: 08123456789.";
+  $("err").textContent=msg;
+  if(msg){a.setAttribute("aria-disabled","true");a.removeAttribute("href");return}
+  a.href=orderHref(nama,hp,al,km);a.removeAttribute("aria-disabled");
+}
+$("slots").onclick=function(e){var b=e.target.closest("[data-d],[data-s],[data-x]");if(!b||b.disabled)return;
+  if(b.dataset.x!=null)spd=b.dataset.x==="j"?"j":+b.dataset.x;
+  else if(b.dataset.d!=null){selD=+b.dataset.d;if(!sAvail(selD,selS))for(var s=0;s<SESI.length;s++)if(sAvail(selD,s)){selS=s;break}}
+  else selS=+b.dataset.s;
+  renderSlots();updateSend()};
+$("chips").onclick=function(e){var b=e.target.closest("[data-c]");if(b){cat=b.dataset.c;renderChips();renderGrid()}};
+$("grid").onclick=function(e){
+  var a=e.target.closest("[data-a]"),m=e.target.closest("[data-m]");
+  if(a){var k=a.dataset.a,it=items[k];if(it.s!=null&&(cart[k]||0)>=it.s)return;cart[k]=(cart[k]||0)+1}
+  else if(m){var j=m.dataset.m;cart[j]=(cart[j]||1)-1;if(cart[j]<=0)delete cart[j]}
+  else return;renderGrid();renderCart();
+};
+["nama","hp","alamat"].forEach(function(i){$(i).oninput=sendSoon});$("q").oninput=renderGrid;
+$("go").onclick=function(){$("checkout").scrollIntoView({behavior:"smooth"})};
+setInterval(function(){if(!$("v3").hidden){renderSlots();updateSend()}},60000);
+
+// ======================= PEDAGANG (dikelola pengelola) =======================
+function allItems(m){var um=solo(m),r=(m.items||[]).map(function(x){return um?{n:x.n,e:x.e||"🛒",u:x.u,p:x.p,c:x.c||"Lainnya",s:x.s,img:x.img,t:m.nama,lk:m.lokasi,wa:m.wa}:x});(m.toko||[]).forEach(function(t){(t.items||[]).forEach(function(x){r.push({n:x.n,e:x.e||"🛒",u:x.u,p:x.p,c:x.c||"Lainnya",s:x.s,img:x.img,t:t.nama,lk:t.lokasi,wa:t.wa})})});return r}
+var tMi=-1,tTi=-1,tp=[];
+function waNorm(v){var d=String(v).replace(/\D/g,"");if(d.indexOf("0")===0)d="62"+d.slice(1);return d}
+function openToko(mi){
+  tMi=mi;var m=list()[mi],ts=m.toko||[];
+  $("fwrap").innerHTML='<div class="frm" id="frm"><h3>Pedagang di '+esc(m.nama)+'</h3>'+
+  (ts.length?ts.map(function(t,i){return '<div class="tr"><b>'+esc(t.nama)+'</b><br><small>📍 '+esc(t.lokasi||"Lokasi kios belum diisi")+' · WA '+esc(t.wa)+' · '+(t.items||[]).length+' produk</small>'+(t.foto?mediaTag(t.foto,t.nama,0,"prev"):"")+'<div class="btns"><button class="btn o" data-te="'+i+'">Ubah / stok</button><button class="btn d" data-tx="'+i+'">Hapus</button></div></div>'}).join(""):'<p class="note">Belum ada pedagang di pasar ini.</p>')+
+  '<div class="btns"><button class="btn" id="tadd">+ Tambah pedagang</button><button class="btn o" id="tclose">Tutup</button></div><div class="err" id="terr" role="alert"></div></div>';
+  $("frm").scrollIntoView({behavior:"smooth"});
+}
+function tForm(ti){
+  tTi=ti;var t=ti>=0?list()[tMi].toko[ti]:null;
+  tp=t?(t.items||[]).map(function(x){return {n:x.n,e:x.e,u:x.u,p:x.p,s:x.s==null?"":x.s,c:x.c,img:x.img}}):[{n:"",u:"",p:"",s:"",c:""}];
+  $("fwrap").innerHTML='<div class="frm" id="frm"><h3>'+(t?"Ubah pedagang":"Tambah pedagang")+'</h3>'+
+  '<label for="tn">Nama pedagang / warung / toko</label><input id="tn" value="'+esc(t?t.nama:"")+'">'+
+  '<label for="tw">Nomor WhatsApp pedagang</label><input id="tw" type="tel" inputmode="tel" value="'+esc(t?t.wa:"")+'" placeholder="08xxxxxxxxxx">'+
+  '<label for="tl">Lokasi kios di dalam pasar</label><input id="tl" list="rl" value="'+esc(t?t.lokasi:"")+'" placeholder="Contoh: Lantai 3, sisi kanan, blok B-12"><datalist id="rl">'+((list()[tMi].ruang||[]).map(function(r){return '<option value="'+esc(r)+'">'}).join(""))+'</datalist>'+
+  '<label for="tf">Foto / video lapak</label><input id="tf" type="file" accept="image/*,video/*">'+(t&&t.foto?mediaTag(t.foto,"Media lapak",1,"prev"):"")+'<label>Produk &amp; stok</label><div id="trows"></div><div class="btns"><button class="btn o" id="radd">+ Tambah produk</button></div>'+
+  '<div class="err" id="terr" role="alert"></div><div class="btns"><button class="btn" id="tsave">Simpan pedagang</button><button class="btn o" id="tback">Batal</button></div></div>';
+  rRows();$("frm").scrollIntoView({behavior:"smooth"});
+}
+function rRows(){
+  $("trows").innerHTML=tp.map(function(r,i){var a='data-r="'+i+'" data-f="';return '<div class="tr"><div class="cust"><input '+a+'n" value="'+esc(r.n)+'" placeholder="Nama produk" aria-label="Nama produk"><input '+a+'u" value="'+esc(r.u)+'" placeholder="Satuan (1 kg)" aria-label="Satuan"><input type="number" min="0" inputmode="numeric" '+a+'p" value="'+esc(r.p)+'" placeholder="Harga" aria-label="Harga"><input type="number" min="0" inputmode="numeric" '+a+'s" value="'+esc(r.s)+'" placeholder="Stok" aria-label="Stok"><input '+a+'c" value="'+esc(r.c)+'" placeholder="Kategori (Sayur…)" aria-label="Kategori"><button class="btn d" data-rd="'+i+'">Hapus</button></div><label style="margin:6px 0 0;font-weight:600">Foto / video produk'+(r.img||r.file?' 🎞️ ada':'')+'</label><input type="file" accept="image/*,video/*" data-rf="'+i+'"></div>'}).join("");
+}
+async function tSave(){
+  var nama=$("tn").value.trim(),wa=waNorm($("tw").value),lk=$("tl").value.trim(),er=$("terr");
+  var rows=tp.filter(function(r){return String(r.n).trim()});
+  if(!nama){er.textContent="Isi nama pedagang atau toko.";return}
+  if(wa.length<10){er.textContent="Isi nomor WhatsApp yang benar.";return}
+  if(!rows.length){er.textContent="Isi minimal satu produk.";return}
+  for(var i=0;i<rows.length;i++){if(!(+rows[i].p>0)){er.textContent="Isi harga untuk "+rows[i].n+".";return}}
+  er.textContent="Mengunggah media…";$("tsave").disabled=true;var vf="";
+  try{for(var j=0;j<rows.length;j++){if(rows[j].file)rows[j].img=await saveMedia(rows[j].file,rows[j].img)}
+    vf=await saveMedia($("tf").files[0],tTi>=0?(list()[tMi].toko[tTi].foto||""):"")}catch(e){$("tsave").disabled=false;er.textContent=(e&&e.message)||"Gagal mengunggah media.";return}
+  var o={nama:nama,wa:wa,lokasi:lk,foto:vf,items:rows.map(function(r){var x={n:String(r.n).trim(),e:r.e||"🛒",u:String(r.u).trim()||"1 pcs",p:+r.p,c:String(r.c).trim()||"Lainnya"};if(String(r.s)!=="")x.s=Math.max(0,+r.s);if(r.img)x.img=r.img;return x})};
+  var m=list()[tMi];m.toko=m.toko||[];if(tTi>=0)m.toko[tTi]=o;else m.toko.push(o);
+  er.textContent="Menyimpan…";$("tsave").disabled=true;
+  commit().catch(function(e){$("tsave").disabled=false;er.textContent="Gagal menyimpan: "+((e&&e.message)||"coba lagi")});
+}
+$("mlist").addEventListener("click",function(e){var t=e.target.closest("[data-t]");if(t)openToko(+t.dataset.t)});
+$("fwrap").addEventListener("change",function(e){var d=e.target.dataset;if(d.rf!=null&&tp[+d.rf])tp[+d.rf].file=e.target.files[0]||null});
+$("fwrap").addEventListener("input",function(e){var d=e.target.dataset;if(d.r!=null&&d.f)tp[+d.r][d.f]=e.target.value});
+$("fwrap").addEventListener("click",function(e){
+  var g=function(s){return e.target.closest(s)},b;
+  if(g("#tadd"))tForm(-1);
+  else if(g("#tclose"))$("fwrap").innerHTML="";
+  else if(b=g("[data-te]"))tForm(+b.dataset.te);
+  else if(b=g("[data-tx]")){if(!b.dataset.sure){b.dataset.sure=1;b.textContent="Yakin hapus? Tekan lagi";return}list()[tMi].toko.splice(+b.dataset.tx,1);commit().catch(function(x){$("terr").textContent="Gagal menyimpan: "+((x&&x.message)||"coba lagi")})}
+  else if(g("#radd")){tp.push({n:"",u:"",p:"",s:"",c:""});rRows()}
+  else if(b=g("[data-rd]")){tp.splice(+b.dataset.rd,1);if(!tp.length)tp.push({n:"",u:"",p:"",s:"",c:""});rRows()}
+  else if(g("#tsave"))tSave();
+  else if(g("#tback"))openToko(tMi);
+});
+
+function infoHtml(m){var h="";if(m.luas)h+='<p>📐 Luas: '+esc(m.luas)+'</p>';if(m.ruang&&m.ruang.length)h+='<p>🏢 Tempat: '+m.ruang.map(function(r){return esc(r)}).join(" · ")+'</p>';return h}
+var canAdmin=false;
+function setModeLabel(){$("modebtn").textContent=admin?"Mode Admin (bisa edit) · ganti":"Mode Pemesan (tanpa edit) · ganti"}
+$("modebtn").onclick=function(){if(!canAdmin)return;admin=!admin;setModeLabel();renderProv();$("fwrap").innerHTML="";if(!$("v2").hidden){$("admbox").hidden=!admin;renderMarkets()}};
+
+// ======================= PESANAN → KURIR =======================
+// Catatan: WhatsApp tidak bisa dikirim otomatis dari halaman web. Tombol membuka chat kurir dengan pesan
+// yang sudah terisi lengkap; pembeli tinggal menekan Kirim. Kirim otomatis butuh WhatsApp Business API + server.
+var WA_KURIR=WA, curId="";
+function orderId(){var d=new Date(Date.now()+7*36e5),p=function(n){return String(n).padStart(2,"0")};return "PK-"+p(d.getUTCDate())+p(d.getUTCMonth()+1)+"-"+Math.random().toString(36).slice(2,6).toUpperCase()}
+function sesiInfo(){var o=wibNow(),d=new Date(Date.UTC(o.year,o.month-1,o.day+selD));return {s:SESI[selS],tgl:d.toLocaleDateString("id-ID",{timeZone:"UTC",weekday:"long",day:"numeric",month:"long"})}}
+// Pilih kurir berstatus Aktif secara acak (bergilir); bila semua Sibuk, teruskan ke admin
+function pickKurir(m){var l=(m.kurirs||[]).map(function(k){return {wa:waNorm(k.wa),st:k.status}}).filter(function(k){return k.wa.length>=10}),ak=l.filter(function(k){return k.st!=="Sibuk"});
+  if(ak.length)return {wa:ak[Math.floor(Math.random()*ak.length)].wa,ok:true};return {wa:WA_KURIR,ok:!l.length}}
+function orderHref(nama,hp,al,km){
+  curId=orderId();var g={},ord=[],si=sesiInfo(),o=wibNow(),kk=pickKurir(mk),sub=total(),xc=xCur(),fx=feeX(),um=solo(mk),ong0=km==null?null:ongkirOf(km),pr=promoOf(mk,sub,ong0),ong=ong0==null?null:ong0-pr+fx,note=$("onote").value.trim();
+  items.forEach(function(i,k){if(!cart[k])return;var key=i.t||"~";if(!g[key]){g[key]={t:i.t||"Produk pasar",lk:i.lk||"",wa:i.wa||"",ls:[],sub:0};ord.push(key)}
+    var q=cart[k],x=g[key];x.ls.push("• "+q+" × "+i.n+" ("+i.u+") = "+rp(q*i.p));x.sub+=q*i.p});
+  var build=function(links){
+    var t="*PESANAN BARU "+curId+"* (nomor antrian)\nDipesan: "+String(o.hour).padStart(2,"0")+"."+String(o.minute).padStart(2,"0")+" WIB\n"+(xc?"Antar: ⚡ CEPAT "+xc.mnt+" menit, target tiba ±"+etaX(xc)+" WIB":"Antar: "+si.tgl+", "+si.s.nama+" jam "+si.s.antar+" WIB")+"\n"+(kk.ok?"":"⚠️ Semua kurir pasar berstatus Sibuk, diteruskan ke admin\n")+"\n"+(um?"*UMKM – KURIR STANDBY, langsung ambil*: ":"Pasar: ")+clean(mk.nama)+" ("+prov+")\n"+(um?"Lokasi penjual: ":"Lokasi pasar: ")+mk.lokasi+"\n"+(jadwalTxt(mk)?"Jadwal pasar: "+jadwalTxt(mk)+"\n":"")+"\n*BELANJA DI PASAR*\n";
+    ord.forEach(function(key,n){var x=g[key];t+=(n+1)+") "+x.t+(x.lk?" – "+x.lk:"")+(x.wa?" (WA "+x.wa+")":"")+"\n"+x.ls.join("\n")+"\nSubtotal: "+rp(x.sub)+"\n\n"});
+    t+="Subtotal barang: "+rp(sub)+"\n"+(ong==null?"Ongkir: dikonfirmasi kurir (jarak belum terhitung)\n*Total (belum ongkir): "+rp(sub)+"*":"Jarak ±"+fk(km)+" km (perkiraan rute)\nOngkir: "+rp(ong)+(fx?" (termasuk kirim cepat "+rp(fx)+")":"")+(pr?" (sudah dipotong promo "+rp(pr)+")":"")+"\n*TOTAL BAYAR: "+rp(sub+ong)+"*")+"\n\nPembayaran: "+payTxt()+"\nJika barang kosong: "+$("oos").value+(note?"\nCatatan: "+note:"")+"\n\n*PEMBELI*\nNama: "+nama+"\nWA: https://wa.me/"+waNorm(hp)+"\nAlamat: "+al+locLines(al);
+    var ps=ord.filter(function(k){return g[k].wa});
+    if(links&&ps.length){t+="\n\n*PESAN KE PEDAGANG* (tekan link, lalu Kirim)\n";ps.forEach(function(k){var x=g[k],pm="Halo "+x.t+", saya kurir Pasar Kita. Mohon disiapkan pesanan "+curId+":\n"+x.ls.join("\n")+"\nTotal: "+rp(x.sub)+"\nTerima kasih.";t+=x.t+": https://wa.me/"+waNorm(x.wa)+"?text="+encodeURIComponent(pm)+"\n"})}
+    return t};
+  var t=build(true);if(encodeURIComponent(t).length>5500)t=build(false);
+  curOrder={id:curId,t:Date.now(),mk:mkey(prov,mk),nama:clean(mk.nama),prov:prov,um:um,sub:sub,pr:pr,fx:fx,total:ong==null?null:sub+ong,jadwal:xc?"Cepat "+xc.mnt+" menit (± "+etaX(xc)+" WIB)":si.tgl+", "+si.s.nama+" "+si.s.antar+" WIB",kurir:kk.wa,pay:payTxt(),oos:$("oos").value,cat:note,buyer:nama,status:0,text:t,items:items.map(function(i,k){return cart[k]?{n:i.n,u:i.u,q:cart[k],p:i.p}:null}).filter(Boolean)};
+  return "https://wa.me/"+kk.wa+"?text="+encodeURIComponent(t);
+}
+function loadBuyer(){try{var b=JSON.parse(localStorage.getItem("pk_buyer")||"{}");[["nama","nama"],["hp","hp"],["alamat","alamat"]].forEach(function(f){if(b[f[0]]&&!$(f[1]).value)$(f[1]).value=b[f[0]]})}catch(e){}}
+function saveBuyer(){try{localStorage.setItem("pk_buyer",JSON.stringify({nama:$("nama").value.trim(),hp:$("hp").value.trim(),alamat:$("alamat").value.trim()}))}catch(e){}}
+$("send").addEventListener("click",function(){
+  if(this.getAttribute("aria-disabled")==="true"||!curOrder)return;
+  saveBuyer();var o=curOrder,a=ordersGet();
+  if(!a.some(function(x){return x.id===o.id})){a.unshift(o);ordersSet(a.slice(0,50));syncOrder(o)}
+  var p=$("sent");p.hidden=false;
+  p.innerHTML='<b>Satu langkah lagi: tekan Kirim di WhatsApp.</b><br>Nomor pesanan <b>'+esc(o.id)+'</b> tersimpan di <b>Pesanan Saya</b>. Pesananmu baru masuk ke kurir setelah tombol Kirim di WhatsApp ditekan.<div class="btns"><button class="btn" id="gotoord">📦 Lihat Pesanan Saya</button><button class="btn o" id="newo">Pesanan baru</button></div>';
+  p.scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+$("sent").addEventListener("click",function(e){
+  if(e.target.closest("#gotoord"))openOrders();
+  else if(e.target.closest("#newo")){cart={};renderGrid();renderCart();this.hidden=true;window.scrollTo({top:0,behavior:"smooth"})}});
+
+// ======================= LOKASI PEMBELI (GPS / ALAMAT MAPS) =======================
+var locMode="gps",gps=null;
+function okMap(u){return /^https:\/\/(www\.google\.[a-z.]+\/maps|maps\.google\.[a-z.]+|maps\.app\.goo\.gl|goo\.gl\/maps)/i.test(u)}
+function setLoc(m){locMode=m;Array.prototype.forEach.call($("locsel").children,function(b){b.setAttribute("aria-pressed",String(b.dataset.l===m))});$("gpsbox").hidden=m!=="gps";$("mapbox").hidden=m!=="alamat";$("allbl").textContent=m==="gps"?"Detail alamat (patokan rumah, RT/RW, warna pagar)":"Alamat lengkap";updateSend()}
+function locLines(al){
+  var dest,t="";
+  if(locMode==="gps"&&gps){dest=gps.lat+","+gps.lng;t+="\nTitik GPS pembeli (±"+Math.round(gps.acc)+" m): https://www.google.com/maps?q="+dest}
+  else{var ml=$("maplink").value.trim();if(ml)t+="\nLink Maps pembeli: "+ml;dest=al}
+  return t+"\nRute: https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(clean(mk.nama)+" "+mk.lokasi)+"&destination="+encodeURIComponent(dest);
+}
+$("locsel").addEventListener("click",function(e){var b=e.target.closest("[data-l]");if(b)setLoc(b.dataset.l)});
+function gpsShow(){var m=$("gpsmsg");if(!gps){return}
+  m.className="note gpsok";m.innerHTML='✅ Sharelock aktif<br>Koordinat: '+gps.lat+', '+gps.lng+'<br>Akurasi: ±'+Math.round(gps.acc)+' m · <a href="https://www.google.com/maps?q='+gps.lat+','+gps.lng+'" target="_blank" rel="noopener">Buka di Google Maps</a>'+(gps.acc>100?'<br>⚠️ Akurasi rendah. Pindah ke tempat terbuka lalu tekan Perbarui.':'')}
+var gpsBusy=false;
+function getGps(auto){
+  var m=$("gpsmsg");
+  if(gpsBusy)return;
+  if(!navigator.geolocation){m.className="note";m.textContent="Perangkat ini tidak mendukung GPS. Pilih “Alamat lain”.";return}
+  gpsBusy=true;if(gps)gpsShow();else{m.className="note";m.textContent="Mendeteksi lokasi Anda…"}
+  try{navigator.geolocation.getCurrentPosition(function(p){
+    gpsBusy=false;gps={lat:+p.coords.latitude.toFixed(6),lng:+p.coords.longitude.toFixed(6),acc:p.coords.accuracy||0};gpsShow();updateSend();
+  },function(err){gpsBusy=false;if(!auto)gps=null;m.className="note";m.textContent=err&&err.code===1?"Izin lokasi ditolak. Aktifkan izin lokasi untuk browser ini lalu tekan Perbarui Sharelock, atau pilih “Alamat lain”.":"Lokasi belum bisa diambil. Coba lagi di tempat terbuka, atau pilih “Alamat lain”.";updateSend()},{enableHighAccuracy:true,timeout:15000,maximumAge:auto?30000:0})}
+  catch(e){gpsBusy=false;m.textContent="Lokasi tidak bisa diakses di sini. Pilih “Alamat lain”."}
+}
+$("getloc").addEventListener("click",function(){getGps(false)});
+$("alamat").addEventListener("input",function(){$("findmap").href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(this.value.trim())});
+$("maplink").addEventListener("input",sendSoon);
+
+// ======================= GEO, ONGKIR & RADIUS =======================
+function wibNow(){var o={};new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Jakarta",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date()).forEach(function(x){o[x.type]=+x.value});return o}
+function hav(a,b){var R=6371,r=Math.PI/180,dl=(b.lat-a.lat)*r,dn=(b.lng-a.lng)*r,x=Math.pow(Math.sin(dl/2),2)+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.pow(Math.sin(dn/2),2);return 2*R*Math.asin(Math.sqrt(x))}
+function parseCoords(t){t=String(t||"");var m=t.match(/@(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)/)||t.match(/[?&](?:q|ll|query|destination)=(-?\d+(?:\.\d+)?)(?:,|%2C)\s*(-?\d+(?:\.\d+)?)/i)||t.match(/!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)/)||t.match(/^\s*(-?\d{1,2}(?:\.\d+)?)\s*[,;]\s*(-?\d{1,3}(?:\.\d+)?)\s*$/);if(!m)return null;var la=+m[1],ln=+m[2];return Math.abs(la)<=90&&Math.abs(ln)<=180?{lat:la,lng:ln}:null}
+function fk(km){return km.toFixed(1).replace(".",",")}
+function ongkirOf(km){return Math.max(ONGKIR_MIN,Math.round(km*TARIF_KM/100)*100)}
+function buyerPt(){return locMode==="gps"?(gps?{lat:gps.lat,lng:gps.lng}:null):parseCoords($("maplink").value)}
+function jarak(){var b=buyerPt();if(!b||!mk||!mk.koor)return null;return hav(mk.koor,b)*ROUTE_F}
+function renderTotals(){
+  if(!mk)return;var sub=total(),el=$("tot"),km=jarak(),bs=$("bs");
+  if(!count()){bs.textContent="Pilih barang dulu";return}
+  var h='<div class="row"><span>Subtotal barang</span><span>'+rp(sub)+'</span></div>';
+  if(km==null){h+='<div class="row"><span>Ongkir</span><span>dikonfirmasi kurir</span></div><div class="row t"><span>Total (belum ongkir)</span><span>'+rp(sub)+'</span></div>';bs.textContent="Belum termasuk ongkir"}
+  else if(km>RADIUS_KM){h+='<div class="row"><span>Jarak ±'+fk(km)+' km</span><span style="color:var(--red)">di luar jangkauan</span></div>';bs.textContent="Di luar jangkauan (maks. "+RADIUS_KM+" km)"}
+  else{var o=ongkirOf(km),f=feeX(),d=promoOf(mk,sub,o);h+='<div class="row"><span>Ongkir ('+fk(km)+' km × Rp'+TARIF_KM.toLocaleString("id-ID")+')</span><span>'+rp(o)+'</span></div>'+(d?'<div class="row"><span>Promo ongkir</span><span>−'+rp(d)+'</span></div>':'')+(f?'<div class="row"><span>Kirim cepat '+spd+' menit</span><span>'+rp(f)+'</span></div>':'')+'<div class="row t"><span>Total bayar</span><span>'+rp(sub+o-d+f)+'</span></div>';bs.textContent="Total bayar "+rp(sub+o-d+f)}
+  if(el)el.innerHTML=h}
+
+// ======================= KURIR (banyak nomor, Aktif/Sibuk) =======================
+var kr=[];
+function rKr(){$("kwrap").innerHTML=kr.map(function(k,i){return '<div class="tr"><div class="cust"><input type="tel" inputmode="tel" data-kn="'+i+'" value="'+esc(k.wa)+'" placeholder="08xxxxxxxxxx" aria-label="WhatsApp kurir"><select data-ks="'+i+'" aria-label="Status kurir"><option'+(k.status!=="Sibuk"?" selected":"")+'>Aktif</option><option'+(k.status==="Sibuk"?" selected":"")+'>Sibuk</option></select></div><button type="button" class="btn d" data-kd="'+i+'" style="margin-top:8px;width:100%">Hapus kurir</button></div>'}).join("")||'<p class="note">Belum ada kurir. Pesanan akan masuk ke nomor admin.</p>'}
+function krClean(){return kr.map(function(k){return {wa:waNorm(k.wa),status:k.status==="Sibuk"?"Sibuk":"Aktif"}}).filter(function(k){return k.wa.length>=10})}
+$("fwrap").addEventListener("input",function(e){var d=e.target.dataset;if(d.kn!=null)kr[+d.kn].wa=e.target.value});
+$("fwrap").addEventListener("change",function(e){var d=e.target.dataset;if(d.ks!=null)kr[+d.ks].status=e.target.value});
+$("fwrap").addEventListener("click",function(e){var b;
+  if(e.target.closest("#kadd")){kr.push({wa:"",status:"Aktif"});rKr()}
+  else if(b=e.target.closest("[data-kd]")){kr.splice(+b.dataset.kd,1);rKr()}
+  else if(e.target.closest("#fgps")){var m=$("ferr");m.textContent="Mengambil lokasi…";
+    try{navigator.geolocation.getCurrentPosition(function(p){$("fc").value=p.coords.latitude.toFixed(6)+", "+p.coords.longitude.toFixed(6);m.textContent="Koordinat terisi. Pastikan Anda memang berada di pasar."},function(){m.textContent="Lokasi tidak bisa diambil. Isi koordinat secara manual."},{enableHighAccuracy:true,timeout:15000})}catch(x){m.textContent="Lokasi tidak bisa diakses di sini. Isi koordinat secara manual."}}
+});
+$("expbtn").addEventListener("click",exportHtml);
+
+// ======================= CARI PASAR TERDEKAT =======================
+var near=[],nearMe=null;
+$("nearbtn").addEventListener("click",function(){
+  var out=$("nearlist");out.innerHTML='<p class="note">Mengambil lokasi…</p>';
+  var fail=function(){out.innerHTML='<p class="err">Lokasi belum bisa diambil. Aktifkan izin lokasi, atau pilih provinsi di bawah.</p>'};
+  if(!navigator.geolocation)return fail();
+  try{navigator.geolocation.getCurrentPosition(function(p){
+    nearMe={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy||0};var r=[],tanpa=0;
+    Object.keys(DATA.pasar).forEach(function(pv){if(!inPilot(pv))return;DATA.pasar[pv].forEach(function(m){if(isDemo(m))return;if(!m.koor){tanpa++;return}r.push({pv:pv,m:m,km:hav(m.koor,nearMe)*ROUTE_F})})});
+    r.sort(function(a,b){return a.km-b.km});near=r.slice(0,10);
+    out.innerHTML=(near.length?near.map(function(x,n){return '<article class="mk"><div class="b"><h3>'+esc(clean(x.m.nama))+'</h3><p>'+esc(x.pv)+' · <b>'+fk(x.km)+' km dari lokasi Anda</b>'+(x.km>RADIUS_KM?' · <span style="color:var(--red)">di luar jangkauan</span>':'')+'</p><div class="btns"><button class="btn" data-nm="'+n+'">Belanja di sini</button></div></div></article>'}).join(""):'<div class="empty">Belum ada pasar yang punya titik koordinat.</div>')+(tanpa?'<p class="note">'+tanpa+' pasar belum diisi koordinatnya sehingga tidak ikut diurutkan.</p>':'');
+  },fail,{enableHighAccuracy:true,timeout:15000,maximumAge:60000})}catch(e){fail()}
+});
+$("nearlist").addEventListener("click",function(e){var b=e.target.closest("[data-nm]");if(!b)return;var x=near[+b.dataset.nm];if(!x)return;
+  openProv(x.pv);openShop(x.m);
+  if(nearMe){gps={lat:+nearMe.lat.toFixed(6),lng:+nearMe.lng.toFixed(6),acc:nearMe.acc};setLoc("gps");$("gpsmsg").textContent="✅ Memakai lokasi dari pencarian pasar terdekat.";updateSend()}});
+
+// ======================= FAVORIT, RATING, PROMO, FILTER =======================
+var FAV={};try{FAV=JSON.parse(localStorage.getItem("pk_fav")||"{}")}catch(e){}
+function mkey(p,m){return p+"|"+m.nama}
+function isFav(p,m){return !!FAV[mkey(p,m)]}
+function toggleFav(k){if(FAV[k])delete FAV[k];else FAV[k]=1;try{localStorage.setItem("pk_fav",JSON.stringify(FAV))}catch(e){}}
+function favBtn(p,m){return '<button class="fav" data-f="'+esc(mkey(p,m))+'" aria-pressed="'+isFav(p,m)+'" aria-label="Favorit">'+(isFav(p,m)?"❤️":"🤍")+'</button>'}
+function ordersGet(){try{return JSON.parse(localStorage.getItem("pk_orders")||"[]")}catch(e){return []}}
+function ordersSet(a){try{localStorage.setItem("pk_orders",JSON.stringify(a))}catch(e){}}
+// Rata-rata = rating bawaan data (m.rt) + rating dari pesanan di HP ini. Rata-rata lintas pembeli butuh backend (BACKEND).
+function ratingOf(p,m){var s=(m.rt&&m.rt.sum)||0,n=(m.rt&&m.rt.n)||0;ordersGet().forEach(function(o){if(o.mk===mkey(p,m)&&o.rate){s+=o.rate.s;n++}});return n?{avg:s/n,n:n}:null}
+function ratingHtml(p,m){var r=ratingOf(p,m);return r?' <span class="tag on">⭐ '+r.avg.toFixed(1).replace(".",",")+' ('+r.n+')</span>':''}
+function promoOf(m,sub,ong){var p=m&&m.promo;if(!p||!p.tipe||ong==null||sub<(+p.min||0))return 0;return p.tipe==="gratis"?ong:Math.min(ong,+p.nilai||0)}
+function promoTxt(m){var p=m.promo;if(!p||!p.tipe)return "";return "🎁 "+(p.tipe==="gratis"?"Gratis ongkir":"Potongan ongkir "+rp(p.nilai))+((+p.min)>0?" min. belanja "+rp(p.min):"")}
+function fastOk(m){return !!m.koor&&(m.h24||pasarBuka(m)!==false)}
+var mfilt="Semua",mfast=false,mfav=false;
+function mOk(p,m){var q=($("mq").value||"").trim().toLowerCase();
+  if(mfilt!=="Semua"&&(m.jenis||"pasar")!==mfilt.toLowerCase())return false;
+  if(mfast&&!fastOk(m))return false;if(mfav&&!isFav(p,m))return false;
+  return !q||m.nama.toLowerCase().indexOf(q)>-1||allItems(m).some(function(i){return i.n.toLowerCase().indexOf(q)>-1})}
+function cardHtml(m,p,i,g){
+  return '<article class="mk">'+foto(m,1)+'<div class="b">'+favBtn(p,m)+'<h3>'+esc(m.nama)+(isDemo(m)?' <span class="tag off">DEMO</span>':'')+jTag(m)+(m.h24?' <span class="tag on">24 jam</span>':'')+ratingHtml(p,m)+'</h3><p>📍 '+esc(m.lokasi)+'</p>'+jadwalHtml(m)+infoHtml(m)+(promoTxt(m)?'<p>'+esc(promoTxt(m))+'</p>':'')+(admin&&!g&&m.pemilik?'<p>👤 '+esc(OL[m.jenis||"pasar"])+': '+esc(m.pemilik.nama||"–")+(m.pemilik.hp?' · '+esc(m.pemilik.hp):'')+(m.pemilik.alamat?'<br>🏠 '+esc(m.pemilik.alamat):'')+'</p>':'')+'<p>'+allItems(m).length+' produk · '+(m.toko||[]).length+' pedagang</p>'+
+  '<div class="btns"><a class="btn o" href="'+mapsLink(m)+'" target="_blank" rel="noopener">Lihat lokasi</a><button class="btn" '+(g?'data-gb="'+esc(p)+'|'+i+'"':'data-b="'+i+'"')+'>Belanja di sini</button></div>'+
+  (admin&&!g?'<div class="btns"><button class="btn o" data-e="'+i+'">Ubah '+JL[m.jenis||"pasar"]+' / foto &amp; video</button><button class="btn o" data-t="'+i+'">Kelola pedagang</button><button class="btn d" data-x="'+i+'">Hapus</button></div>':'')+'</div></article>'}
+function favClick(e,after){var b=e.target.closest("[data-f]");if(b){toggleFav(b.dataset.f);after();return true}return false}
+$("mchips").addEventListener("click",function(e){var b=e.target.closest("[data-mf]");if(b){mfilt=b.dataset.mf;renderMarkets()}});
+$("mq").addEventListener("input",renderMarkets);
+$("xchips").addEventListener("click",function(e){var b=e.target.closest("[data-xf]");if(b){if(b.dataset.xf==="fast")mfast=!mfast;else mfav=!mfav;renderMarkets()}});
+$("tabaddbar").addEventListener("click",function(e){var b=e.target.closest("[data-add]");if(b)openForm(-1,b.dataset.add)});
+$("mlist").addEventListener("click",function(e){favClick(e,renderMarkets)});
+$("shophead").addEventListener("click",function(e){favClick(e,function(){$("shophead").querySelector(".fav").outerHTML=favBtn(prov,mk)})});
+$("gq").addEventListener("input",function(){var q=this.value.trim().toLowerCase(),out=$("gres");if(q.length<2){out.innerHTML="";return}
+  var h="";Object.keys(DATA.pasar).forEach(function(p){if(!inPilot(p))return;DATA.pasar[p].forEach(function(m,i){if(isDemo(m))return;
+    var hit=allItems(m).filter(function(x){return x.n.toLowerCase().indexOf(q)>-1});
+    if(m.nama.toLowerCase().indexOf(q)>-1||hit.length)h+=cardHtml(m,p,i,true)+(hit.length?'<p class="note" style="margin:-6px 4px 8px">Produk: '+hit.slice(0,4).map(function(x){return esc(x.n)}).join(", ")+'</p>':'')})});
+  out.innerHTML=h||'<div class="empty">Tidak ada hasil.</div>'});
+$("gres").addEventListener("click",function(e){if(favClick(e,function(){$("gq").dispatchEvent(new Event("input"))}))return;var b=e.target.closest("[data-gb]");if(!b)return;var a=b.dataset.gb.split("|");openProv(a[0]);openShop(DATA.pasar[a[0]][+a[1]])});
+
+// ======================= PEMBAYARAN =======================
+var pm="cod";
+function payTxt(){return pm==="cod"?"COD (bayar di tempat)":pm==="qris"?"QRIS (kirim bukti bayar ke kurir)":"Transfer Bank"+((DATA.pay||{}).bank?" – "+DATA.pay.bank.replace(/\n/g," / "):" (info rekening dikirim kurir)")}
+function renderPay(){var P=DATA.pay||{};
+  $("paysel").innerHTML=[["cod","💵 COD"],["qris","▣ QRIS"],["tf","🏦 Transfer"]].map(function(x){return '<button type="button" class="slot" data-pm="'+x[0]+'" aria-pressed="'+(pm===x[0])+'"><b>'+x[1]+'</b></button>'}).join("");
+  $("paybox").innerHTML=pm==="cod"?"Bayar tunai ke kurir saat barang tiba.":pm==="qris"?(P.qris?'<img class="prev" src="'+esc(P.qris)+'" alt="QRIS pembayaran"><br>':"QRIS akan dikirim kurir lewat WhatsApp.<br>")+"Kirim bukti bayar ke kurir.":(P.bank?esc(P.bank).replace(/\n/g,"<br>"):"Info rekening akan dikirim kurir lewat WhatsApp.")+"<br>Kirim bukti transfer ke kurir."}
+$("paysel").addEventListener("click",function(e){var b=e.target.closest("[data-pm]");if(b){pm=b.dataset.pm;renderPay();updateSend()}});
+["oos","onote"].forEach(function(i){$(i).addEventListener("input",sendSoon);$(i).addEventListener("change",sendLite)});
+function fillPay(){var P=DATA.pay||{};$("pbank").value=P.bank||"";if(P.qris){$("pqprev").src=P.qris;$("pqprev").hidden=false}}
+$("psave").addEventListener("click",async function(){var m=$("admmsg");m.textContent="Menyimpan…";
+  try{var f=$("pq").files[0],url=(DATA.pay||{}).qris||"";
+    if(f){var blob=await resize(f),as=window.claude&&await claude.use("assets");url=as?(await as.upload(blob)).url:await toData(blob)}
+    DATA.pay={bank:$("pbank").value.trim(),qris:url};await commit()}catch(e){m.textContent="Gagal menyimpan: "+((e&&e.message)||"coba lagi")}});
+
+// ======================= PESANAN SAYA, STATUS, RATING, SINKRONISASI =======================
+var curOrder=null,rsel={};
+function syncOrder(o){if(!BACKEND.url)return;try{
+  var body=JSON.stringify({id:o.id,data:o}),u=BACKEND.url.replace(/\/$/,"");
+  if(BACKEND.type==="supabase")fetch(u+"/rest/v1/"+BACKEND.table+"?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json",apikey:BACKEND.key,Authorization:"Bearer "+((SES&&sesOk()&&SES.token)||BACKEND.key),Prefer:((SES&&sesOk())?"resolution=merge-duplicates":"resolution=ignore-duplicates")+",return=minimal"},body:body}).then(function(r){if(r.ok)markSynced(o.id)}).catch(function(){});
+  else fetch(BACKEND.url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:body}).then(function(){markSynced(o.id)}).catch(function(){})
+}catch(e){}}
+function markSynced(id){var a=ordersGet();a.forEach(function(o){if(o.id===id)o.synced=true});ordersSet(a)}
+function pullStatus(){if(!BACKEND.url||BACKEND.type!=="supabase")return Promise.resolve();var a=ordersGet(),u=BACKEND.url.replace(/\/$/,"");
+  return Promise.all(a.filter(function(o){return o.status<3}).map(function(o){return fetch(u+"/rest/v1/"+BACKEND.table+"?id=eq."+encodeURIComponent(o.id)+"&select=data",{headers:{apikey:BACKEND.key,Authorization:"Bearer "+BACKEND.key}}).then(function(r){return r.json()}).then(function(j){var d=j&&j[0]&&j[0].data;if(d&&d.status>o.status)o.status=d.status}).catch(function(){})})).then(function(){ordersSet(a)})}
+function sCode(id,st){var h=0,x=id+"|"+st+"|"+KODE_STATUS;for(var i=0;i<x.length;i++)h=(h*31+x.charCodeAt(i))>>>0;return h.toString(36).slice(-4).padStart(4,"0")}
+function applyParts(id,st,chk){var a=ordersGet(),o=a.filter(function(x){return x.id.toUpperCase()===id})[0];
+  if(!o)return "Pesanan "+id+" tidak ditemukan di HP ini.";
+  if(!(st>=0&&st<=3)||sCode(id,st)!==String(chk).toLowerCase())return "Kode tidak valid.";
+  o.status=st;ordersSet(a);syncOrder(o);return "Status "+id+" diperbarui: "+STATUS[st]+"."}
+function applyCode(c){var m=String(c||"").trim().match(/^(PK-\d{4}-[A-Z0-9]{4})\.(\d)\.([a-z0-9]{4})$/i);return m?applyParts(m[1].toUpperCase(),+m[2],m[3]):"Format kode salah. Contoh: PK-2411-ABCD.2.k3f9"}
+function hashApply(){var m=(location.hash||"").match(/^#st-(PK-\d{4}-[A-Z0-9]{4})-(\d)-([a-z0-9]{4})$/i);if(m){openOrders();$("kmsg").textContent=applyParts(m[1].toUpperCase(),+m[2],m[3]);renderOrders()}}
+function copyText(t,btn){var done=function(){btn.textContent="Tersalin ✓"};
+  function fb(){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done()}catch(e){btn.textContent="Gagal menyalin"}ta.remove()}
+  try{navigator.clipboard.writeText(t).then(done,fb)}catch(e){fb()}}
+function ratingBox(o,i){if(o.rate)return '<p>Ulasanmu: '+"⭐".repeat(o.rate.s)+(o.rate.c?' – '+esc(o.rate.c):'')+'</p>';
+  return '<div class="tr"><b>Beri rating</b><div>'+[1,2,3,4,5].map(function(k){return '<button class="star" data-rk="'+i+'.'+k+'" aria-label="'+k+' bintang">★</button>'}).join("")+'</div><input id="rc'+i+'" placeholder="Ulasan singkat (opsional)"><div class="btns"><button class="btn" data-rs="'+i+'">Kirim rating</button></div></div>'}
+function renderOrders(){var a=ordersGet().slice(0,20);
+  $("olist").innerHTML=a.length?a.map(function(o,i){
+    return '<article class="mk"><div class="b"><h3>'+esc(o.nama)+' <span class="tag '+(o.status===3?'on':'off')+'">'+STATUS[o.status]+'</span></h3><p>'+esc(o.id)+' · '+new Date(o.t).toLocaleString("id-ID",{timeZone:"Asia/Jakarta",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})+' WIB'+(o.synced?' · ☁️ tersinkron':'')+'</p>'+
+    '<div class="tl" aria-label="Status: '+STATUS[o.status]+'">'+[0,1,2,3].map(function(k){return '<i class="'+(k<=o.status?'on':'')+'"></i>'}).join("")+'</div><p>🕒 '+esc(o.jadwal)+'</p>'+
+    o.items.map(function(x){return '<div class="row"><span>'+x.q+' × '+esc(x.n)+' <small>('+esc(x.u)+')</small></span><span>'+rp(x.q*x.p)+'</span></div>'}).join("")+
+    '<div class="row t"><span>Total bayar</span><span>'+(o.total!=null?rp(o.total):rp(o.sub)+' + ongkir')+'</span></div><p class="note">Pembayaran: '+esc(o.pay)+(o.cat?' · Catatan: '+esc(o.cat):'')+' · Jika kosong: '+esc(o.oos)+'</p>'+
+    '<div class="btns"><button class="btn o" data-oc="'+i+'">Salin pesan</button><a class="btn" href="https://wa.me/'+esc(o.kurir)+'?text='+encodeURIComponent(o.text)+'" target="_blank" rel="noopener">Buka chat kurir</a></div>'+(o.status===3?ratingBox(o,i):'')+'</div></article>'}).join("")
+  :'<div class="empty">Belum ada pesanan. Pesanan yang kamu kirim akan muncul di sini.</div>'}
+function openOrders(){show("v4");renderOrders();pullStatus().then(renderOrders)}
+$("ordbtn").onclick=openOrders;$("back4").onclick=function(){show("v1")};
+$("kapply").onclick=function(){$("kmsg").textContent=applyCode($("kode").value);renderOrders()};
+window.addEventListener("hashchange",hashApply);
+$("olist").addEventListener("click",function(e){var a=ordersGet(),b;
+  if(b=e.target.closest("[data-oc]"))copyText(a[+b.dataset.oc].text,b);
+  else if(b=e.target.closest("[data-rk]")){var p=b.dataset.rk.split("."),k=+p[1];rsel[p[0]]=k;Array.prototype.forEach.call(b.parentNode.children,function(s,n){s.classList.toggle("on",n<k)})}
+  else if(b=e.target.closest("[data-rs]")){var i=b.dataset.rs;if(!rsel[i]){b.textContent="Pilih bintang dulu";return}var o=a[+i];o.rate={s:rsel[i],c:($("rc"+i).value||"").trim().slice(0,200)};ordersSet(a);syncOrder(o);renderOrders()}});
+$("sst").innerHTML=STATUS.map(function(s,i){return '<option value="'+i+'">'+s+'</option>'}).join("");
+$("sgen").addEventListener("click",function(){var id=$("sid").value.trim().toUpperCase(),st=+$("sst").value,o=$("sout");
+  if(!/^PK-\d{4}-[A-Z0-9]{4}$/.test(id)){o.textContent="Format ID salah. Contoh: PK-2411-ABCD";return}
+  var c=sCode(id,st);o.innerHTML='Kode: <b>'+id+'.'+st+'.'+c+'</b><br>Link: tambahkan <b>#st-'+id+'-'+st+'-'+c+'</b> di ujung alamat halaman.<br>Pesan siap kirim: <i>Status pesanan '+id+': '+STATUS[st]+'. Tempel kode ini di Pesanan Saya: '+id+'.'+st+'.'+c+'</i>'});
+
+// =====================================================================================================
+// [B] AUTENTIKASI ADMIN (email + password lewat Supabase Auth)
+//  - Password TIDAK disimpan di halaman/localStorage; hanya dikirim sekali ke server Auth lewat HTTPS.
+//  - Sesi (token) disimpan di sessionStorage: hilang saat tab ditutup. Token berumur pendek dan diperbarui otomatis.
+// =====================================================================================================
+var SES=null;
+function sesLoad(){try{SES=JSON.parse(sessionStorage.getItem("pk_ses")||"null")}catch(e){SES=null}}
+function sesSave(){try{if(SES)sessionStorage.setItem("pk_ses",JSON.stringify(SES));else sessionStorage.removeItem("pk_ses")}catch(e){}}
+function sesOk(){return !!(SES&&SES.token&&SES.exp>Date.now()+15000)}
+function dbH(write){return {apikey:DB.anonKey,Authorization:"Bearer "+(write&&SES?SES.token:DB.anonKey)}}
+async function authToken(body,grant){
+  var r=await fetch(DB.url.replace(/\/$/,"")+"/auth/v1/token?grant_type="+grant,{method:"POST",headers:{apikey:DB.anonKey,"Content-Type":"application/json"},body:JSON.stringify(body)});
+  var j=await r.json().catch(function(){return {}});
+  if(!r.ok)throw new Error(grant==="password"?"Email atau password salah.":"Sesi berakhir.");
+  return {token:j.access_token,refresh:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000}}
+async function login(email,pass){var t=await authToken({email:email,password:pass},"password");SES={token:t.token,refresh:t.refresh,exp:t.exp,email:email};sesSave()}
+async function ensureSession(){
+  if(sesOk())return;
+  if(SES&&SES.refresh){try{var t=await authToken({refresh_token:SES.refresh},"refresh_token");SES.token=t.token;SES.refresh=t.refresh;SES.exp=t.exp;sesSave();return}catch(e){}}
+  SES=null;sesSave();throw new Error("Sesi admin tidak aktif atau berakhir. Masuk lagi.")}
+// Admin = punya baris di tabel admins (RLS membuat pengguna hanya melihat barisnya sendiri)
+async function isAdminUser(){await ensureSession();
+  var r=await fetch(DB.url.replace(/\/$/,"")+"/rest/v1/"+DB.adminsTable+"?select=user_id&limit=1",{headers:dbH(true)});
+  if(!r.ok)return false;var j=await r.json();return !!(j&&j.length)}
+function updateAuthUi(){$("admlink").textContent=(DB.url&&SES&&canAdmin)?"Keluar admin ("+SES.email+")":"Masuk admin"}
+function logoutLocal(){SES=null;sesSave();canAdmin=admin=false;$("modebtn").hidden=true;$("admbox").hidden=true;$("fwrap").innerHTML="";updateAuthUi();renderProv()}
+async function logout(){try{if(SES)await fetch(DB.url.replace(/\/$/,"")+"/auth/v1/logout",{method:"POST",headers:dbH(true)})}catch(e){}logoutLocal();show("v1")}
+$("admlink").addEventListener("click",function(e){e.preventDefault();
+  if(DB.url&&SES&&canAdmin){logout();return}
+  $("lmsg").textContent=DB.url?"":"Login belum aktif. Buka Pengaturan database di bawah untuk mengaktifkannya.";
+  $("dbsetup").open=!DB.url;show("v5")});
+$("back5").addEventListener("click",function(){show("v1")});
+$("lpass").addEventListener("keydown",function(e){if(e.key==="Enter")$("lgo").click()});
+// Cek berkala: bila sesi habis dan tidak bisa diperbarui, mode admin dimatikan otomatis.
+setInterval(async function(){if(DB.url&&canAdmin&&!sesOk()){try{await ensureSession()}catch(e){logoutLocal()}}},60000);
+$("lgo").addEventListener("click",async function(){
+  var m=$("lmsg"),em=$("lemail").value.trim(),pw=$("lpass").value,b=this;
+  if(!DB.url){m.textContent="Login belum aktif: isi Pengaturan database di bawah (sekali saja), lalu masuk lagi.";return}
+  if(!em||!pw){m.textContent="Isi email dan password.";return}
+  m.textContent="Memeriksa…";b.disabled=true;
+  try{await login(em,pw);
+    if(!await isAdminUser()){logoutLocal();throw new Error("Akun ini bukan admin.")}
+    canAdmin=admin=true;$("modebtn").hidden=false;setModeLabel();$("lpass").value="";m.textContent="";updateAuthUi();renderProv();show("v1")}
+  catch(e){m.textContent=(e&&e.message)||"Gagal masuk."}
+  b.disabled=false});
+
+// =====================================================================================================
+// [C] LAPISAN AKSES DATA — BACA: publik (kunci anon) · TULIS: hanya dengan token sesi admin (diverifikasi RLS server)
+// =====================================================================================================
+async function dbLoad(){if(!DB.url)return false;
+  try{var r=await fetch(DB.url.replace(/\/$/,"")+"/rest/v1/"+DB.dataTable+"?id=eq."+encodeURIComponent(DB.rowId)+"&select=data",{headers:dbH(false)});
+    if(!r.ok)return false;var j=await r.json();
+    if(j[0]&&j[0].data&&j[0].data.pasar){DATA=j[0].data;fixData();return true}}catch(e){}return false}
+async function dbSave(){await ensureSession();
+  var h=dbH(true);h["Content-Type"]="application/json";h.Prefer="resolution=merge-duplicates,return=minimal";
+  var r=await fetch(DB.url.replace(/\/$/,"")+"/rest/v1/"+DB.dataTable+"?on_conflict=id",{method:"POST",headers:h,body:JSON.stringify({id:DB.rowId,data:DATA,updated_at:new Date().toISOString()})});
+  if(r.status===401||r.status===403)throw new Error("Ditolak server: akun ini bukan admin atau sesi tidak valid.");
+  if(!r.ok)throw new Error("Gagal menyimpan ke database ("+r.status+").")}
+
+// ======================= PENGATURAN DATABASE DARI LAYAR =======================
+// Mengisi DB tanpa edit kode. Hanya URL + anon PUBLIC key yang diterima; kunci rahasia (service_role/secret) ditolak.
+function dbCfgNorm(u){u=String(u||"").trim().replace(/\/+$/,"");return /^https:\/\/[a-z0-9-]+\.supabase\.(co|in)$/i.test(u)?u:""}
+function keyBad(k){k=String(k||"").trim();if(/^sb_secret_/i.test(k))return true;try{var p=JSON.parse(atob(k.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")));return p.role==="service_role"}catch(e){return false}}
+function dbSql(email){var em=String(email||"emailanda@contoh.com").replace(/[^A-Za-z0-9@._+-]/g,"");
+  var adm="exists (select 1 from admins a where a.user_id = auth.uid())";
+  var pol=[["baca publik","app_data","for select to anon, authenticated using (true)"],
+    ["admin tambah","app_data","for insert to authenticated with check ("+adm+")"],
+    ["admin ubah","app_data","for update to authenticated using ("+adm+") with check ("+adm+")"],
+    ["lihat diri sendiri","admins","for select to authenticated using (user_id = auth.uid())"],
+    ["pembeli buat pesanan","orders","for insert to anon, authenticated with check (true)"],
+    ["admin baca pesanan","orders","for select to authenticated using ("+adm+")"],
+    ["admin ubah pesanan","orders","for update to authenticated using ("+adm+")"]];
+  var q=["create table if not exists app_data (id text primary key, data jsonb not null, updated_at timestamptz default now());",
+    "create table if not exists admins (user_id uuid primary key references auth.users(id) on delete cascade);",
+    "create table if not exists orders (id text primary key, data jsonb not null, created_at timestamptz default now());",
+    "alter table app_data enable row level security;","alter table admins enable row level security;","alter table orders enable row level security;"];
+  pol.forEach(function(p){q.push('drop policy if exists "'+p[0]+'" on '+p[1]+';');q.push('create policy "'+p[0]+'" on '+p[1]+' '+p[2]+';')});
+  q.push("-- Jalankan baris ini SETELAH akun admin dibuat (Authentication > Users > Add user). Jalankan ulang bila perlu:");
+  q.push("insert into admins (user_id) select id from auth.users where email = '"+em+"' on conflict do nothing;");
+  return q.join("\n")}
+$("dbsave").addEventListener("click",async function(){
+  var m=$("dbmsg"),u=dbCfgNorm($("dbu").value),k=$("dbk").value.trim(),b=this;
+  if(!u){m.textContent="URL harus seperti https://xxxx.supabase.co";return}
+  if(k.length<20){m.textContent="Isi anon public key.";return}
+  if(keyBad(k)){m.textContent="⛔ Itu kunci RAHASIA (service_role/secret). Jangan dipakai di sini. Pakai anon public key.";return}
+  m.textContent="Menguji koneksi…";b.disabled=true;
+  try{var r=await fetch(u+"/rest/v1/"+DB.dataTable+"?select=id&limit=1",{headers:{apikey:k,Authorization:"Bearer "+k}});
+    if(r.status===401||r.status===403){m.textContent="Kunci ditolak ("+r.status+"). Periksa anon public key.";b.disabled=false;return}
+    var warn=(r.status===404||r.status===400)?" Tabel app_data belum ada: tekan Salin SQL lalu Run di SQL Editor Supabase.":"";
+    try{localStorage.setItem("pk_dbcfg",JSON.stringify({url:u,anonKey:k}))}catch(e){}
+    m.textContent="Terhubung ✓ ("+r.status+")."+warn+" Memuat ulang…";
+    setTimeout(function(){location.reload()},1800)}
+  catch(e){m.textContent="Tidak bisa terhubung. Periksa URL dan jaringan. Bila halaman dibuka di dalam Claude, akses ke situs lain dibatasi: pasang file di hosting sendiri."}
+  b.disabled=false});
+$("dbsql").addEventListener("click",function(){copyText(dbSql($("lemail").value.trim()),this)});
+$("dbclr").addEventListener("click",function(){try{localStorage.removeItem("pk_dbcfg")}catch(e){}$("dbmsg").textContent="Pengaturan dihapus. Memuat ulang…";setTimeout(function(){location.reload()},900)});
+$("dbpush").addEventListener("click",function(){$("admmsg").textContent="Mengirim…";commit().catch(function(e){$("admmsg").textContent="Gagal: "+((e&&e.message)||"coba lagi")})});
+$("dbpush").hidden=!DB.url;if(DB.url)$("dbu").value=DB.url;
+// Saat Export HTML: tanam URL + anon key ke bagian DB agar SEMUA pengunjung membaca data dari database yang sama.
+function embedDb(c){if(!DB.url)return;var sc=[].filter.call(c.querySelectorAll("script"),function(x){return x.textContent.indexOf("var DB={")>-1})[0];if(!sc)return;
+  sc.textContent=sc.textContent.replace(/(var DB=\{\s*url:)"[^"]*"/,function(_,a){return a+JSON.stringify(DB.url)}).replace(/(anonKey:)"[^"]*"/,function(_,a){return a+JSON.stringify(DB.anonKey)})}
+
+// ======================= MULAI =======================
+renderProv();show("v1");fillPay();renderPay();hashApply();
+dbLoad().then(function(ok){if(ok){renderProv();fillPay();if(prov&&!$("v2").hidden)renderMarkets()}});
+try{var lp=sessionStorage.getItem("prov");if(lp&&PROVINSI.indexOf(lp)>-1){sessionStorage.removeItem("prov");openProv(lp)}}catch(e){}
+// Mode pengelola hanya muncul untuk pemilik/editor halaman ini
+(async function(){
+  if(DB.url){ // mode database: admin HANYA lewat login email; abaikan akun Claude dan #admin
+    sesLoad();
+    try{if(SES&&await isAdminUser()){canAdmin=admin=true;$("modebtn").hidden=false;setModeLabel();renderProv();if(prov){$("admbox").hidden=false;renderMarkets()}}else{SES=null;sesSave()}}catch(e){SES=null;sesSave()}
+    updateAuthUi();return}
+  if(!window.claude){ // hosting biasa: Mode Admin lokal lewat alamat …#admin (perubahan hanya tersimpan di browser itu, tidak memengaruhi pengunjung lain)
+    canAdmin=admin=(location.hash==="#admin");if(canAdmin){$("modebtn").hidden=false;setModeLabel();renderProv();if(prov){$("admbox").hidden=false;renderMarkets()}}return}
+  try{
+    var u=window.claude&&await claude.use("user");
+    canAdmin=admin=!!(u&&await u.canEdit());if(canAdmin){$("modebtn").hidden=false;setModeLabel();renderProv()}
+    if(admin&&prov){$("admbox").hidden=false;renderMarkets()}
+  }catch(e){}
+})();
+</script>
+
+
+</body></html>
